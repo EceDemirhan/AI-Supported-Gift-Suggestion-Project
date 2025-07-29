@@ -6,7 +6,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const genAI = new GoogleGenerativeAI("AIzaSyCgAisK3-JseC3w2I5zOhBbuhd26uRqVJA"); // <-- KEY burada mı?
 
-export async function getGiftSuggestions(form: any): Promise<string[]> {
+export async function getGiftSuggestions(form: any): Promise<any[]> {
   const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
   const prompt = `
@@ -21,19 +21,28 @@ export async function getGiftSuggestions(form: any): Promise<string[]> {
 
     Yukarıdaki bilgileri dikkate alarak bu kişiye alınabilecek 3 yaratıcı hediye önerisi yap. 
 Her bir öneri şu formatta olsun:
-1. Ürün adı
-2. Açıklama (neden uygun olduğu)
-3. **Gerçek ve çalışır bir ürün linki** (tercihen Trendyol veya Hepsiburada gibi sitelerden)
 
-Yalnızca yukarıdaki 3 öneriyi yap. Liste halinde yaz. Format bozulmasın.
+[{aciklama:'Buraya açıklama girilecek',link:'https..',baslik:'ürün adı yazacak'}]
+Yalnızca yukarıdaki 3 öneriyi yap. Liste halinde yaz. JSON Formatında cevapla yorum yapma.
   `;
 
   const result = await model.generateContent(prompt);
-  const text = result.response.text();
+  const text = await result.response.text();
 
-  // 1. - 2. - 3. gibi ayırırsak
-  return text
-    .split(/\n+/)
-    .filter((s) => s.trim())
-    .map((s) => s.replace(/^\d+[\.\-]?\s*/, ''));
+  // Kod bloklarını ve gereksiz satırları temizle
+  const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```/i) || text.match(/\[\s*{[\s\S]*}\s*\]/);
+  let jsonString = jsonMatch ? jsonMatch[1] || jsonMatch[0] : text;
+
+  // Fazladan kod bloğu veya satır başı karakterlerini temizle
+  jsonString = jsonString.replace(/^[^\[]*\[/, '[').replace(/\][^\]]*$/, ']');
+
+  try {
+    return JSON.parse(jsonString);
+  } catch (e) {
+    // Parse edilemezse fallback olarak eski split yöntemiyle döndür
+    return text
+      .split(/\n+/)
+      .filter((s) => s.trim())
+      .map((s) => s.replace(/^\d+[\.\-]?\s*/, ''));
+  }
 }

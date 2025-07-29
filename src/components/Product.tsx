@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+
 import React, { useState } from 'react';
 
 import Slider from 'react-slick';
@@ -155,6 +156,7 @@ const Product = () => {
                 const baslik = item.baslik || 'Başlık yok';
                 const aciklama = item.aciklama || 'Açıklama yok';
                 const link = item.link || '#';
+                // eslint-disable-next-line @typescript-eslint/no-shadow
                 const hostname = link.startsWith('http') ? new URL(link).hostname : '';
 
                 return (
@@ -168,7 +170,7 @@ const Product = () => {
                       <h3 className="text-xl font-bold mb-2">{baslik}</h3>
                       <p className="mb-3">{aciklama}</p>
                       <a
-                        href={link.startsWith('http') ? link : `https://${link}`}
+                       href={link.startsWith('http') ? link : `https://${link}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:underline"
