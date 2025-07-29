@@ -4,7 +4,7 @@
 // lib/gemini.ts
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const genAI = new GoogleGenerativeAI("AIzaSyCgAisK3-JseC3w2I5zOhBbuhd26uRqVJA"); // <-- KEY burada mı?
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string); 
 
 export async function getGiftSuggestions(form: any): Promise<any[]> {
   const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
