@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable prettier/prettier */
+/* import React from 'react';
 
 import config from '../config/index.json';
 
@@ -53,3 +54,4 @@ const Features = () => {
 };
 
 export default Features;
+*/
