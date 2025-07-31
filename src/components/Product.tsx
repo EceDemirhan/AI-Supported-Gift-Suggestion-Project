@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+/* eslint-disable prettier/prettier */
+>>>>>>> 9c3ec1d (sayfa cssleri düzenlendi.)
 import React, { useState } from 'react';
 
 const kategoriSecenekleri = [
@@ -9,6 +13,8 @@ const kategoriSecenekleri = [
   'Kitap',
   'Kozmetik',
 ];
+
+
 
 const Product = () => {
   const [form, setForm] = useState({
@@ -54,7 +60,21 @@ const Product = () => {
   };
 
   return (
-    <section className="bg-background py-10" id="product">
+<section
+  id="product"
+  className="py-10"
+  style={{
+    ...(form.neden === 'Doğum Günü'
+      ? {
+          backgroundImage: 'url("/assets/images/dogumGunuArkaPlan.png")',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }
+      : {}),
+  }}
+>
+
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-3xl font-bold text-center text-primary mb-8">
           Hediye Öneri Formu
@@ -194,6 +214,47 @@ const Product = () => {
             </button>
           </div>
         </form>
+<<<<<<< HEAD
+=======
+
+        {loading && <p className="text-center text-gray-500 mt-4">Yükleniyor...</p>}
+
+        {oneriler.length > 0 && (
+          <div className="mt-10">
+            <h3 className="text-xl font-bold text-center mb-6">🎁 Önerilen Hediyeler</h3>
+            <Slider {...sliderAyar}>
+              {oneriler.map((item, index) => {
+                const baslik = item.baslik || 'Başlık yok';
+                const aciklama = item.aciklama || 'Açıklama yok';
+                const link = item.link || '#';
+                const hostname = link.startsWith('http') ? new URL(link).hostname : '';
+
+                return (
+                  <div key={index} className="p-4 bg-white border rounded shadow mx-4">
+                    <div className="text-center">
+                      <img
+                        src={`https://www.google.com/s2/favicons?domain=${hostname}`}
+                        alt="favicon"
+                        className="inline-block mb-2"
+                      />
+                      <h3 className="text-xl font-bold mb-2">{baslik}</h3>
+                      <p className="mb-3">{aciklama}</p>
+                      <a
+                        href={link.startsWith('http') ? link : `https://${link}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
+                        Ürünü Gör
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+            </Slider>
+          </div>
+        )}
+>>>>>>> 9c3ec1d (sayfa cssleri düzenlendi.)
       </div>
     </section>
   );

@@ -22,7 +22,7 @@ const MainHero = () => {
   const mainHero: MainHeroType = config.mainHero;
 
   return (
-    <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+    <main className="w-full mt-10 px-6 lg:mt-16 xl:mt-20">
       <div className="sm:text-center lg:text-left">
         <h1 className="text-3xl tracking-tight font-bold text-gray-900 sm:text-4xl md:text-5xl leading-tight">
           <span className="block">{mainHero.title}</span>
