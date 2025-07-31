@@ -23,10 +23,10 @@ export async function getGiftSuggestions(form: any): Promise<any[]> {
 Her bir öneri şu formatta olsun:
 
 [{aciklama:'Buraya açıklama girilecek',link:'https..',baslik:'ürün adı yazacak'}]
-Yalnızca yukarıdaki 3 öneriyi yap. Liste halinde yaz. JSON Formatında cevapla yorum yapma.
+Yalnızca yukarıdaki 3 öneriyi yap. Liste halinde yaz. JSON Formatında cevapla yorum yapma. Verdiğin önerilerdeki linkler trendyol veya hepsiburada sitelerinden olsun ve linkler doğru, çalışabilir linkler olsun.
   `;
 
-  const result = await model.generateContent(prompt);
+  const result = await model.generateContent(prompt); // POST isteği yapılıyor fetch gibi
   const text = await result.response.text();
 
   // Kod bloklarını ve gereksiz satırları temizle

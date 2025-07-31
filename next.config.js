@@ -12,7 +12,7 @@ module.exports = withBundleAnalyzer({
   // So, the source code is "basePath-ready".
   // You can remove `basePath` if you don't need it.
     env: {
-    GEMINI_API_KEY: process.env.GEMINI_API_KEY, // 🌟 burası önemli
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY, 
   },
   reactStrictMode: true,
 });
