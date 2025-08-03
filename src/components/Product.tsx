@@ -4,6 +4,7 @@
 >>>>>>> 9c3ec1d (sayfa cssleri düzenlendi.)
 import React, { useState } from 'react';
 
+<<<<<<< HEAD
 const kategoriSecenekleri = [
   'Kıyafet',
   'Ayakkabı',
@@ -13,8 +14,9 @@ const kategoriSecenekleri = [
   'Kitap',
   'Kozmetik',
 ];
-
-
+=======
+import { getGiftSuggestions } from '../lib/gemini';
+>>>>>>> 4eed998 (hediye önerileri divi için css düzenlendi.)
 
 const Product = () => {
   const [form, setForm] = useState({
@@ -54,33 +56,34 @@ const Product = () => {
       setHataMesaji('Lütfen en az bir kategori seçin.');
       return;
     }
+<<<<<<< HEAD
     setHataMesaji('');
     console.log('Form verileri:', form);
     alert('Form başarıyla gönderildi!');
   };
 
-  return (
-<section
-  id="product"
-  className="py-10"
-  style={{
-    ...(form.neden === 'Doğum Günü'
-      ? {
-          backgroundImage: 'url("/assets/images/dogumGunuArkaPlan.png")',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }
-      : {}),
-  }}
->
+=======
+  };
 
+  const kategoriSecenekleri = ['Kıyafet', 'Ayakkabı', 'Ev Eşyası', 'Aksesuar', 'Elektronik', 'Kitap', 'Kozmetik'];
+
+>>>>>>> 4eed998 (hediye önerileri divi için css düzenlendi.)
+  return (
+    <section
+ 
+
+    >
+      {/* Form */}
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-3xl font-bold text-center text-primary mb-8">
           Hediye Öneri Formu
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+<<<<<<< HEAD
+=======
+          {/* Kime */}
+>>>>>>> 4eed998 (hediye önerileri divi için css düzenlendi.)
           <div>
             <label className="block font-medium text-gray-700">
               Kime hediye alıyorsun? *
@@ -101,6 +104,7 @@ const Product = () => {
             </select>
           </div>
 
+          {/* Neden */}
           <div>
             <label className="block font-medium text-gray-700">
               Ne için alıyorsun? *
@@ -120,6 +124,7 @@ const Product = () => {
             </select>
           </div>
 
+          {/* Yaş */}
           <div>
             <label className="block font-medium text-gray-700">Yaşı</label>
             <input
@@ -131,6 +136,7 @@ const Product = () => {
             />
           </div>
 
+          {/* Cinsiyet */}
           <div>
             <label className="block font-medium text-gray-700">
               Cinsiyet *
@@ -149,6 +155,7 @@ const Product = () => {
             </select>
           </div>
 
+          {/* Burç */}
           <div>
             <label className="block font-medium text-gray-700">Burç</label>
             <input
@@ -160,6 +167,7 @@ const Product = () => {
             />
           </div>
 
+          {/* Sevdikleri */}
           <div>
             <label className="block font-medium text-gray-700">
               Sevdiği dizi, film veya müzik
@@ -172,6 +180,7 @@ const Product = () => {
             />
           </div>
 
+          {/* Hobileri */}
           <div>
             <label className="block font-medium text-gray-700">Hobileri</label>
             <textarea
@@ -182,6 +191,7 @@ const Product = () => {
             />
           </div>
 
+          {/* Kategori */}
           <div>
             <label className="block font-medium text-gray-700 mb-1">
               Kategori tercihleri <span className="text-red-500">*</span>
@@ -205,6 +215,7 @@ const Product = () => {
             )}
           </div>
 
+          {/* Buton */}
           <div className="text-center">
             <button
               type="submit"
@@ -215,47 +226,71 @@ const Product = () => {
           </div>
         </form>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+      </div>
+>>>>>>> 4eed998 (hediye önerileri divi için css düzenlendi.)
 
-        {loading && <p className="text-center text-gray-500 mt-4">Yükleniyor...</p>}
-
-        {oneriler.length > 0 && (
-          <div className="mt-10">
-            <h3 className="text-xl font-bold text-center mb-6">🎁 Önerilen Hediyeler</h3>
-            <Slider {...sliderAyar}>
-              {oneriler.map((item, index) => {
+     
+     
+      {oneriler.length >= 3 && (
+        <section className="bg-white py-8" id="pricing">
+          <div className="container mx-auto px-2 pt-4 pb-12 text-primary">
+            <h1 className="w-full my-2 text-5xl font-bold leading-tight text-center text-primary">
+              Önerilen Hediyeler
+            </h1>
+            <div className="w-full mb-4">
+              <div className="h-1 mx-auto bg-primary w-64 opacity-25 my-0 py-0 rounded-t"></div>
+            </div>
+            <div className="flex flex-col sm:flex-row justify-center pt-12 my-12 sm:my-4 flex-wrap">
+              {oneriler.slice(0, 3).map((item, index) => {
                 const baslik = item.baslik || 'Başlık yok';
                 const aciklama = item.aciklama || 'Açıklama yok';
                 const link = item.link || '#';
-                const hostname = link.startsWith('http') ? new URL(link).hostname : '';
+                const isPro = index === 1;
 
                 return (
-                  <div key={index} className="p-4 bg-white border rounded shadow mx-4">
-                    <div className="text-center">
-                      <img
-                        src={`https://www.google.com/s2/favicons?domain=${hostname}`}
-                        alt="favicon"
-                        className="inline-block mb-2"
-                      />
-                      <h3 className="text-xl font-bold mb-2">{baslik}</h3>
-                      <p className="mb-3">{aciklama}</p>
-                      <a
-                        href={link.startsWith('http') ? link : `https://${link}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
-                      >
-                        Ürünü Gör
-                      </a>
+                  <div
+                    key={index}
+                    style={{ width: isPro ? '400px' : '360px' }}
+                    className={`flex flex-col mx-4 rounded-lg bg-white mt-4 shadow-lg ${
+                      isPro ? 'sm:-mt-6 z-10' : ''
+                    }`}
+                  >
+                    <div className="flex-1 text-gray-600 rounded-t rounded-b-none overflow-hidden shadow">
+                      <div className={`p-8 text-2xl font-bold text-center ${isPro ? 'text-red-500' : 'text-primary'}`}>
+                        {baslik}
+                      </div>
+                      <ul className="w-full text-center text-sm px-6 py-4 leading-relaxed">
+                        <li>{aciklama}</li>
+                      </ul>
+                    </div>
+                    <div className="flex-none mt-auto rounded-b overflow-hidden shadow p-6">
+                      <div className="w-full pt-2 text-center">
+                        <a
+                          href={link.startsWith('http') ? link : `https://${link}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 font-semibold hover:underline"
+                        >
+                          Ürünü Gör
+                        </a>
+                      </div>
                     </div>
                   </div>
                 );
               })}
-            </Slider>
+            </div>
           </div>
+<<<<<<< HEAD
         )}
 >>>>>>> 9c3ec1d (sayfa cssleri düzenlendi.)
       </div>
+=======
+        </section>
+      )}
+>>>>>>> 4eed998 (hediye önerileri divi için css düzenlendi.)
     </section>
   );
 };

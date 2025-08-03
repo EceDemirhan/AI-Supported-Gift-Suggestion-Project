@@ -1,4 +1,6 @@
-import React, { Fragment } from 'react';
+/* eslint-disable @next/next/no-html-link-for-pages */
+/* eslint-disable prettier/prettier */
+import React, { Fragment, useEffect, useState } from 'react';
 
 import { Popover, Transition } from '@headlessui/react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
@@ -7,13 +9,34 @@ import { Link } from 'react-scroll';
 import config from '../config/index.json';
 
 const Menu = () => {
-  const { navigation, company, callToAction } = config;
+  const { navigation, company } = config;
   const { name: companyName, logo } = company;
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const loginStatus = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loginStatus);
+  }, []);
+
+  const handleFavoriClick = () => {
+    if (isLoggedIn) {
+      window.dispatchEvent(new CustomEvent('show-favori-modal'));
+    } else {
+      window.dispatchEvent(new CustomEvent('show-login-modal'));
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userEmail');
+    window.location.reload();
+  };
 
   return (
     <>
       <svg
-        className={`hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-background transform translate-x-1/2`}
+        className="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-background transform translate-x-1/2"
         fill="currentColor"
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
@@ -23,47 +46,65 @@ const Menu = () => {
       </svg>
 
       <Popover>
-        <div className="relative pt-6 px-4 sm:px-6 lg:px-8">
+        <div className="relative pt-6 px-2 sm:px-4 lg:px-6 lg:ml-[-42px]">
           <nav
             className="relative flex items-center justify-between sm:h-10 lg:justify-start"
             aria-label="Global"
           >
-            <div className="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
-              <div className="flex items-center justify-between w-full md:w-auto">
-                <a href="#">
+            <div className="flex items-center">
+              <div className="flex items-center gap-4">
+                <a href="#" className="logo-link">
                   <span className="sr-only">{companyName}</span>
-                  <img alt="logo" className="h-24 w-auto sm:h-24 lg:h-28" src={logo} />
+                  <img alt="logo" className="h-40 w-auto sm:h-44 lg:h-48" src={logo} />
                 </a>
                 <div className="-mr-2 flex items-center md:hidden">
-                  <Popover.Button
-                    className={`bg-background rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary`}
-                  >
+                  <Popover.Button className="bg-background rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary">
                     <span className="sr-only">Open main menu</span>
                     <MenuIcon className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>
                 </div>
               </div>
             </div>
-            <div className="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
-              {navigation.map((item) => (
-                <Link
-                  spy={true}
-                  active="active"
-                  smooth={true}
-                  duration={1000}
-                  key={item.name}
-                  to={item.href}
-                  className="font-medium text-gray-500 hover:text-gray-900"
+            <div className="hidden md:flex md:items-center md:space-x-3 text-sm lg:text-base">
+              {navigation.map((item) =>
+                item.href === 'favorimodal' ? (
+                  <span
+                    key={item.name}
+                    onClick={handleFavoriClick}
+                    className="cursor-pointer font-medium text-gray-500 hover:text-red-600"
+                  >
+                    {item.name}
+                  </span>
+                ) : (
+                  <Link
+                    spy={true}
+                    active="active"
+                    smooth={true}
+                    duration={1000}
+                    key={item.name}
+                    to={item.href}
+                    className="font-medium text-gray-500 hover:text-gray-900"
+                  >
+                    {item.name}
+                  </Link>
+                )
+              )}
+
+              {isLoggedIn ? (
+                <button
+                  onClick={handleLogout}
+                  className="text-sm text-red-600 border border-red-600 px-3 py-1 rounded hover:bg-red-100"
                 >
-                  {item.name}
-                </Link>
-              ))}
-              <a
-                href="#"
-                className={`font-medium text-primary hover:text-secondary`}
-              >
-                Call to action
-              </a>
+                  Çıkış Yap
+                </button>
+              ) : (
+                <a
+                  href="/login"
+                  className="text-sm text-white bg-red-600 px-3 py-1 rounded hover:bg-red-700"
+                >
+                  Giriş Yap
+                </a>
+              )}
             </div>
           </nav>
         </div>
@@ -81,43 +122,59 @@ const Menu = () => {
             focus
             className="absolute z-10 top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden"
           >
-            <div
-              className={`rounded-lg shadow-md bg-background ring-1 ring-black ring-opacity-5 overflow-hidden`}
-            >
+            <div className="rounded-lg shadow-md bg-background ring-1 ring-black ring-opacity-5 overflow-hidden">
               <div className="px-5 pt-4 flex items-center justify-between">
                 <div>
-                  <img className="h-8 w-auto" src={logo} alt="" />
+                  <img className="h-16 w-auto" src={logo} alt="" />
                 </div>
                 <div className="-mr-2">
-                  <Popover.Button
-                    className={`bg-background rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary`}
-                  >
+                  <Popover.Button className="bg-background rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary">
                     <span className="sr-only">Close main menu</span>
                     <XIcon className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>
                 </div>
               </div>
               <div className="px-2 pt-2 pb-3 space-y-1">
-                {navigation.map((item) => (
-                  <Link
-                    spy={true}
-                    active="active"
-                    smooth={true}
-                    duration={1000}
-                    key={item.name}
-                    to={item.href}
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                {navigation.map((item) =>
+                  item.href === 'favorimodal' ? (
+                    <span
+                      key={item.name}
+                      onClick={handleFavoriClick}
+                      className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                    >
+                      {item.name}
+                    </span>
+                  ) : (
+                    <Link
+                      spy={true}
+                      active="active"
+                      smooth={true}
+                      duration={1000}
+                      key={item.name}
+                      to={item.href}
+                      className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                    >
+                      {item.name}
+                    </Link>
+                  )
+                )}
+
+                {isLoggedIn ? (
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-100"
                   >
-                    {item.name}
-                  </Link>
-                ))}
+                    Çıkış Yap
+                  </button>
+                ) : (
+                  <a
+                    href="/login"
+                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-red-600 hover:bg-red-700"
+                  >
+                    Giriş Yap
+                  </a>
+                )}
               </div>
-              <a
-                href={callToAction.href}
-                className={`block w-full px-5 py-3 text-center font-medium text-primary bg-gray-50 hover:bg-gray-100`}
-              >
-                {callToAction.text}
-              </a>
             </div>
           </Popover.Panel>
         </Transition>

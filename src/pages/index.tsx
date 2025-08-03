@@ -1,17 +1,24 @@
-import React from 'react';
+/* eslint-disable prettier/prettier */
+import React, { useState } from 'react';
+
+import { ToastContainer } from 'react-toastify';
 
 import About from '../components/About';
 import Analytics from '../components/Analytics';
 import Canvas from '../components/Canvas';
-import Features from '../components/Features';
 import Header from '../components/Header';
+import HowItWorks from '../components/HowItWorks'; // Eğer bileşen components/HowItWorks.tsx içindeyse
 import LazyShow from '../components/LazyShow';
 import MainHero from '../components/MainHero';
 import MainHeroImage from '../components/MainHeroImage';
-import Pricing from '../components/Pricing';
 import Product from '../components/Product';
 
+
+
 const App = () => {
+  const [favoriler, setFavoriler] = useState<any[]>([]);
+  const [favoriModal, setFavoriModal] = useState(false);
+
   return (
     <div className={`bg-background grid gap-y-16 overflow-hidden`}>
       <div className={`relative bg-background`}>
@@ -25,23 +32,25 @@ const App = () => {
           </div>
         </div>
         <MainHeroImage />
+        
       </div>
       <Canvas />
       <LazyShow>
         <>
-          <Product />
+          <Product  
+          favoriler={favoriler}
+  setFavoriler={setFavoriler}
+  favoriModal={favoriModal}
+  setFavoriModal={setFavoriModal} />
           <Canvas />
         </>
       </LazyShow>
-      <LazyShow>
-        <>
-          <Features />
-          <Canvas />
-        </>
-      </LazyShow>
-      <LazyShow>
-        <Pricing />
-      </LazyShow>
+  <LazyShow>
+  <div id="howitworks">
+    <HowItWorks />
+  </div>
+</LazyShow>
+
       <LazyShow>
         <>
           <Canvas />
@@ -49,6 +58,18 @@ const App = () => {
         </>
       </LazyShow>
       <Analytics />
+      <ToastContainer
+  position="bottom-right"
+  autoClose={2000}
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+/>
+
     </div>
   );
 };
