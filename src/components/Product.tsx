@@ -69,9 +69,23 @@ const Product = () => {
 
 >>>>>>> 4eed998 (hediye önerileri divi için css düzenlendi.)
   return (
-    <section
- 
+    <>
+      {/* 🎁 FORM KISMI */}
+      <section
+        id="product"
+        className="relative min-h-screen flex items-center justify-center"
+        style={{
+          minHeight: '100vh',
+          width: '100%',
+          backgroundImage: "url('/assets/images/tasarım.png')",
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'contain',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="absolute inset-0 bg-white bg-opacity-70 z-0"></div>
 
+<<<<<<< HEAD
     >
       {/* Form */}
       <div className="max-w-3xl mx-auto px-6">
@@ -231,56 +245,132 @@ const Product = () => {
 =======
       </div>
 >>>>>>> 4eed998 (hediye önerileri divi için css düzenlendi.)
+=======
+        <div className="relative z-10 max-w-4xl mx-auto px-6">
+          <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-lg space-y-6">
+            <h2 className="text-4xl font-bold text-center text-red-600 mb-6">Hediye Öneri Formu</h2>
 
-     
-     
-      {oneriler.length >= 3 && (
-        <section className="bg-white py-8" id="pricing">
-          <div className="container mx-auto px-2 pt-4 pb-12 text-primary">
-            <h1 className="w-full my-2 text-5xl font-bold leading-tight text-center text-primary">
-              Önerilen Hediyeler
-            </h1>
-            <div className="w-full mb-4">
-              <div className="h-1 mx-auto bg-primary w-64 opacity-25 my-0 py-0 rounded-t"></div>
+            {/* Grup 1: Kime + Neden */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block font-medium text-gray-700">Kime hediye alıyorsun? *</label>
+                <select name="kime" value={form.kime} onChange={handleInputChange} required className="w-full border rounded px-3 py-2 mt-1">
+                  <option value="">Seçiniz</option>
+                  <option>Anne</option>
+                  <option>Baba</option>
+                  <option>Sevgili</option>
+                  <option>Arkadaş</option>
+                  <option>Eş</option>
+                </select>
+              </div>
+              <div>
+                <label className="block font-medium text-gray-700">Ne için alıyorsun? *</label>
+                <select name="neden" value={form.neden} onChange={handleInputChange} required className="w-full border rounded px-3 py-2 mt-1">
+                  <option value="">Seçiniz</option>
+                  <option>Doğum Günü</option>
+                  <option>Evlilik Yıldönümü</option>
+                  <option>Terfi</option>
+                  <option>Diğer</option>
+                </select>
+              </div>
             </div>
-            <div className="flex flex-col sm:flex-row justify-center pt-12 my-12 sm:my-4 flex-wrap">
-              {oneriler.slice(0, 3).map((item, index) => {
-                const baslik = item.baslik || 'Başlık yok';
-                const aciklama = item.aciklama || 'Açıklama yok';
-                const link = item.link || '#';
-                const isPro = index === 1;
 
-                return (
-                  <div
-                    key={index}
-                    style={{ width: isPro ? '400px' : '360px' }}
-                    className={`flex flex-col mx-4 rounded-lg bg-white mt-4 shadow-lg ${
-                      isPro ? 'sm:-mt-6 z-10' : ''
-                    }`}
-                  >
-                    <div className="flex-1 text-gray-600 rounded-t rounded-b-none overflow-hidden shadow">
-                      <div className={`p-8 text-2xl font-bold text-center ${isPro ? 'text-red-500' : 'text-primary'}`}>
-                        {baslik}
-                      </div>
-                      <ul className="w-full text-center text-sm px-6 py-4 leading-relaxed">
-                        <li>{aciklama}</li>
-                      </ul>
-                    </div>
-                    <div className="flex-none mt-auto rounded-b overflow-hidden shadow p-6">
-                      <div className="w-full pt-2 text-center">
-                        <a
-                          href={link.startsWith('http') ? link : `https://${link}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 font-semibold hover:underline"
-                        >
-                          Ürünü Gör
-                        </a>
-                      </div>
-                    </div>
+            {/* Grup 2: Yaş + Cinsiyet + Burç */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block font-medium text-gray-700">Yaşı</label>
+                <input type="number" name="yas" value={form.yas} onChange={handleInputChange} className="w-full border rounded px-3 py-2 mt-1" />
+              </div>
+              <div>
+                <label className="block font-medium text-gray-700">Cinsiyet *</label>
+                <select name="cinsiyet" value={form.cinsiyet} onChange={handleInputChange} required className="w-full border rounded px-3 py-2 mt-1">
+                  <option value="">Seçiniz</option>
+                  <option>Kadın</option>
+                  <option>Erkek</option>
+                  <option>Belirtmek İstemiyor</option>
+                </select>
+              </div>
+              <div>
+                <label className="block font-medium text-gray-700">Burç</label>
+                <input type="text" name="burc" value={form.burc} onChange={handleInputChange} className="w-full border rounded px-3 py-2 mt-1" />
+              </div>
+            </div>
+>>>>>>> 6e9b5b7 (form düzenlendi..)
+
+            {/* Grup 3: Sevdikleri */}
+            <div>
+              <label className="block font-medium text-gray-700">Sevdiği dizi, film veya müzik</label>
+              <textarea name="sevdigi" value={form.sevdigi} onChange={handleInputChange} className="w-full border rounded px-3 py-2 mt-1" />
+            </div>
+
+            {/* Grup 4: Hobiler */}
+            <div>
+              <label className="block font-medium text-gray-700">Hobileri</label>
+              <textarea name="hobiler" value={form.hobiler} onChange={handleInputChange} className="w-full border rounded px-3 py-2 mt-1" />
+            </div>
+
+            {/* Grup 5: Kategoriler */}
+            <div>
+              <label className="block font-medium text-gray-700 mb-2">Kategori Tercihleri *</label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-gray-50 border rounded px-4 py-4">
+                {kategoriSecenekleri.map((kategori) => (
+                  <label key={kategori} className="inline-flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      value={kategori}
+                      checked={form.kategoriler.includes(kategori)}
+                      onChange={() => handleKategoriToggle(kategori)}
+                      className="form-checkbox text-primary"
+                    />
+                    <span>{kategori}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Buton */}
+            <div className="text-center">
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold text-lg px-6 py-3 rounded-lg hover:from-red-600 hover:to-pink-600 transition"
+                disabled={loading}
+              >
+                {loading ? 'Yükleniyor...' : '🎯 Önerileri Göster'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      {/* 🎯 ÖNERİLER */}
+      {oneriler.length >= 3 && (
+        <section className="bg-white py-12" id="pricing">
+          <div className="container mx-auto px-4">
+            <h1 className="text-4xl font-bold text-center text-primary mb-6">Önerilen Hediyeler</h1>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {oneriler.slice(0, 3).map((item, index) => (
+                <div
+                  key={index}
+                  className={`rounded-lg bg-white shadow-md p-6 flex flex-col justify-between ${
+                    index === 1 ? 'border-2 border-red-500' : ''
+                  }`}
+                >
+                  <div>
+                    <h3 className="text-xl font-bold text-center text-red-500 mb-4">{item.baslik || 'Başlık yok'}</h3>
+                    <p className="text-sm text-gray-700 text-center">{item.aciklama || 'Açıklama yok'}</p>
                   </div>
-                );
-              })}
+                  <div className="mt-4 text-center">
+                    <a
+                      href={item.link?.startsWith('http') ? item.link : `https://${item.link}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 font-medium hover:underline"
+                    >
+                      Ürünü Gör
+                    </a>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 <<<<<<< HEAD
@@ -290,8 +380,12 @@ const Product = () => {
 =======
         </section>
       )}
+<<<<<<< HEAD
 >>>>>>> 4eed998 (hediye önerileri divi için css düzenlendi.)
     </section>
+=======
+    </>
+>>>>>>> 6e9b5b7 (form düzenlendi..)
   );
 };
 

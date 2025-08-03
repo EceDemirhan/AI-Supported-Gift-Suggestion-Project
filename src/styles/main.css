@@ -26,5 +26,11 @@ a:hover {
 .content ul {
   @apply my-6;
 }
+.bg-gift-pattern {
+  background-image: url('/assets/images/form arka plan.png'), url('/assets/images/form arka plan.png');
+  background-repeat: no-repeat;
+  background-position: left center, right center;
+  background-size: auto 70%;
+}
 
 
