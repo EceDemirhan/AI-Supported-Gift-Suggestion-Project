@@ -1,30 +1,26 @@
 
-
-
-## <a href="https://react-landing-page-template-2021.vercel.app/"> LIVE DEMO</a>
-
-<img src="public/assets/gifs/demo.gif" width="100%" height="auto" />
-
 ### Description
 
-This is a React.js/Next.js based landing page plug-n-play template, ideal for startups/companies/service providers wanting to showcase their vision in a single page sleek and modern landing page.
+**Hediyem Ne Olsa?** is an AI-powered gift suggestion web app built with React, Next.js, and Tailwind CSS.  
+This project helps users find the perfect gift by analyzing recipient details like age, gender, interests, hobbies, and zodiac sign — all powered by Google Gemini AI.
 
 ### Features
 
-- 📱  Responsive design
-- 🔥 [Next.js](https://nextjs.org) for Static Site Generator
+- 📱 Mobile-first responsive design
 
-- 🎨 Integrate with [Tailwind CSS](https://tailwindcss.com) (w/ JIT mode)
+- 🎁 AI-driven personalized gift suggestions (Gemini API)
 
-- 💅 PostCSS for processing Tailwind CSS and integrated to `styled-jsx`
+- ❤️ Add to favorites with interactive heart icon and confetti effect
 
-- 🎉 Type checking [TypeScript](https://www.typescriptlang.org)
+- 🔔 Toast alerts to enhance user feedback
 
-- 🗂 VSCode configuration: Debug, Settings, Tasks and extension for PostCSS, ESLint, Prettier, TypeScript
+- 🔥 Built using [Next.js](https://nextjs.org)
 
-- 🤖 SEO metadata, JSON-LD and Open Graph tags with Next SEO
+- 💅 Type-safe code with [TypeScript](https://www.typescriptlang.org)
 
-- 🖱️ One click deployment with Vercel or Netlify (or manual deployment to any hosting services)
+- 🎨 Styled with [Tailwind CSS](https://tailwindcss.com)
+
+- 🧠 Simple, elegant, and intuitive UX for everyday users
 
 Built-in feature from Next.js:
 
@@ -32,66 +28,36 @@ Built-in feature from Next.js:
 - 💨 Live reload
 - ✅ Cache busting
 
-### Make it your own
+### Installation
 
-#### 1. Clone repo
+```bash
+git clone https://github.com/yourusername/AI-Supported-Gift-Suggestion-Project.git
+cd AI-Supported-Gift-Suggestion-Project
+npm install
+npm run dev
+Then open http://localhost:3000 in your browser.
 
-```
-git clone https://github.com/issaafalkattan/react-landing-page-template-2021.git
-cd react-landing-page-template-2021
-yarn
-```
+ ### Technologies Used
 
-Then, you can run locally in development mode with live reload:
+-React.js
 
-```
-yarn dev
-```
+-Next.js
 
-Open <http://localhost:3000> with your favorite browser to see your project.
+-TypeScript
 
-#### 2. Add your own content
+-Tailwind CSS
 
- 1. **Content**: change the configuration in the ```src/config/index.json``` file to change the content of the landing page to match your use ```src/config/index.json```  folder and .
- 2. **Images**:  add any images/icons..etc to the ```public/assets/images```  folder and update their reference source in ```src/config/index.json```.
- 3. **Theme**:  to change the theme, update the ```tailwind.config.js```  file to match the theme of your branding. [Tutorial](https://tailwindcss.com/docs/configuration).
+-Toastify
 
-#### 3. Deploy to production
+-Google Gemini API
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fissaafalkattan%2Freact-landing-page-template-2021)
-
-##### Deploy manually
-
-You can see the results locally in production mode with:
-
-  ```
-yarn build
-yarn start
-```
-
-The generated HTML and CSS files are minified (built-in feature from Next js). It will also removed unused CSS from [Tailwind CSS](https://tailwindcss.com).
-
-You can create an optimised production build with:
-
-```
-yarn build-prod
-```
-
-### Contributions
-
-Everyone is welcome to contribute to this project. Feel free to open an issue if you have question or found a bug.
-
-### License
-
-Licensed under the MIT License, Copyright © 2021
-  
-
-## Liked this template? <a href="https://www.buymeacoffee.com/issaaf">Buy me a coffee ☕️</a>
+-Confetti.js
 
 
+#### License
+Licensed under the MIT License.
+Originally based on: issaafalkattan/react-landing-page-template-2021
 
-
----
-
-### Looking for v1? <a href="https://github.com/issaafalkattan/React-Landing-Page-Template">V1</a>
->>>>>>> 9df56c0 (İlk commit)
+#### Project by
+Developed with care by Ece Demirhan
+Let your gifts stand out — let AI help you find the perfect one! 🎁
