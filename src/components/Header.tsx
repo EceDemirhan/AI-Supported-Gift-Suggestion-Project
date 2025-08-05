@@ -6,6 +6,7 @@ import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import { Link } from 'react-scroll';
 
 import config from '../config/index.json';
+import logo from 'next-seo/lib/jsonld/logo';
 
 const Menu = () => {
   const { navigation, company } = config;
@@ -64,6 +65,7 @@ const Menu = () => {
                 </div>
               </div>
             </div>
+<<<<<<< HEAD
             <div className="hidden md:flex md:items-center md:space-x-3 text-sm lg:text-base">
               {navigation.map((item) =>
                 item.href === 'favorimodal' ? (
@@ -104,6 +106,33 @@ const Menu = () => {
                   Giriş Yap
                 </a>
               )}
+=======
+            <div className="hidden md:block md:space-x-6">
+           {navigation.map((item) =>
+  item.href === 'favorimodal' ? (
+    <span
+      key={item.name}
+      onClick={() => window.dispatchEvent(new CustomEvent('show-favori-modal'))}
+      className="cursor-pointer font-medium text-gray-500 hover:text-red-600"
+    >
+      {item.name}
+    </span>
+  ) : (
+    <Link
+      spy={true}
+      active="active"
+      smooth={true}
+      duration={1000}
+      key={item.name}
+      to={item.href}
+      className="font-medium text-gray-500 hover:text-gray-900"
+    >
+      {item.name}
+    </Link>
+  )
+)}
+
+>>>>>>> 2512043 (Favorilere ekleme özelliği eklendi – react-toastify ve canvas-confetti entegre edildi)
             </div>
           </nav>
         </div>
