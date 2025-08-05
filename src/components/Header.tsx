@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
 /* eslint-disable prettier/prettier */
 import React, { Fragment, useEffect, useState } from 'react';
 
@@ -167,6 +166,7 @@ const Menu = () => {
                     Çıkış Yap
                   </button>
                 ) : (
+                  // eslint-disable-next-line @next/next/no-html-link-for-pages
                   <a
                     href="/login"
                     className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-red-600 hover:bg-red-700"

@@ -16,6 +16,34 @@ a {
 a:hover {
   @apply border-b-2 border-red-700;
 }
+.logo-link {
+  border-bottom: none !important;
+  display: inline-block;
+  width: fit-content;
+}
+
+.logo-link {
+  border-bottom: none !important;
+  display: inline-block;
+  width: fit-content;
+  overflow: hidden; /* ÖNEMLİ! Hover genişlemesini engeller */
+}
+
+.logo-link:hover {
+  border-bottom: none !important;
+  /* kesinlikle BURAYA scale koyma! */
+}
+
+.logo-link:hover img {
+  transform: scale(1.08);
+  transition: transform 0.2s ease;
+
+  -webkit-transform: scale(1.08);
+  -moz-transform: scale(1.08);
+  -ms-transform: scale(1.08);
+  -o-transform: scale(1.08);
+}
+
 
 
 
