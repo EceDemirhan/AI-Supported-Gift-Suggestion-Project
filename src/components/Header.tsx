@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React, { Fragment, useEffect, useState } from 'react';
 
 import { Popover, Transition } from '@headlessui/react';
@@ -6,7 +5,6 @@ import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import { Link } from 'react-scroll';
 
 import config from '../config/index.json';
-import logo from 'next-seo/lib/jsonld/logo';
 
 const Menu = () => {
   const { navigation, company } = config;
@@ -55,7 +53,11 @@ const Menu = () => {
               <div className="flex items-center gap-4">
                 <a href="#" className="logo-link">
                   <span className="sr-only">{companyName}</span>
-                  <img alt="logo" className="h-40 w-auto sm:h-44 lg:h-48" src={logo} />
+                  <img
+                    alt="logo"
+                    className="h-40 w-auto sm:h-44 lg:h-48"
+                    src={logo}
+                  />
                 </a>
                 <div className="-mr-2 flex items-center md:hidden">
                   <Popover.Button className="bg-background rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary">
@@ -65,7 +67,6 @@ const Menu = () => {
                 </div>
               </div>
             </div>
-<<<<<<< HEAD
             <div className="hidden md:flex md:items-center md:space-x-3 text-sm lg:text-base">
               {navigation.map((item) =>
                 item.href === 'favorimodal' ? (
@@ -106,33 +107,6 @@ const Menu = () => {
                   Giriş Yap
                 </a>
               )}
-=======
-            <div className="hidden md:block md:space-x-6">
-           {navigation.map((item) =>
-  item.href === 'favorimodal' ? (
-    <span
-      key={item.name}
-      onClick={() => window.dispatchEvent(new CustomEvent('show-favori-modal'))}
-      className="cursor-pointer font-medium text-gray-500 hover:text-red-600"
-    >
-      {item.name}
-    </span>
-  ) : (
-    <Link
-      spy={true}
-      active="active"
-      smooth={true}
-      duration={1000}
-      key={item.name}
-      to={item.href}
-      className="font-medium text-gray-500 hover:text-gray-900"
-    >
-      {item.name}
-    </Link>
-  )
-)}
-
->>>>>>> 2512043 (Favorilere ekleme özelliği eklendi – react-toastify ve canvas-confetti entegre edildi)
             </div>
           </nav>
         </div>
