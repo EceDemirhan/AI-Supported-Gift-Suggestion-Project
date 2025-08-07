@@ -1,4 +1,3 @@
-// /pages/api/favoriEkle.ts
 /* eslint-disable prettier/prettier */
 import type { NextApiRequest, NextApiResponse } from 'next';
 

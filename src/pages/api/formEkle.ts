@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         ]
       );
 
-     res.status(200).json({ id: result.rows[0].id }); 
+     res.status(200).json(result.rows[0])
     } catch (error) {
       console.error('Veritabanı ekleme hatası:', error);
       res.status(500).json({ error: 'Kayıt sırasında hata oluştu' });

@@ -9,7 +9,10 @@ import pool from '../../lib/lib/db';
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
-) {
+)
+{
+console.log("Gelen veri:", req.body);
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Yalnızca POST istekleri desteklenir.' });
   }
