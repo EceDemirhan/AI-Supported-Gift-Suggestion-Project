@@ -17,8 +17,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       sevdigi_medya,
       hobiler,
       kategori_tercihleri
+      
     } = req.body;
-
+console.log("formEkle gelen veri:", req.body)
     try {
       const result = await pool.query(
         `INSERT INTO gift_requests 

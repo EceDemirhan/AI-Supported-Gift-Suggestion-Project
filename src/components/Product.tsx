@@ -284,7 +284,7 @@ const toggleFavori = async (item: any) => {
       </section>
 
       {/* 🎯 ÖNERİLEN HEDİYELER */}
-      {oneriler.length >= 3 && (
+      {oneriler?.length >= 3 && (
         <section className="bg-white py-12" id="pricing">
           <div className="container mx-auto px-4">
             <h1 className="text-4xl font-bold text-center text-primary mb-6">Önerilen Hediyeler</h1>
