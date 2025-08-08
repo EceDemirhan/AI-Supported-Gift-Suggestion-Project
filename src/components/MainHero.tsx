@@ -8,14 +8,8 @@ type MainHeroType = {
   subtitle: string;
   description: string;
   img: string;
-  primaryAction: {
-    text: string;
-    href: string;
-  };
-  secondaryAction?: {
-    text: string;
-    href: string;
-  };
+  primaryAction: { text: string; href: string };
+  secondaryAction?: { text: string; href: string };
 };
 
 const MainHero = () => {
@@ -23,7 +17,10 @@ const MainHero = () => {
   const mainHero: MainHeroType = config.mainHero;
 
   return (
-    <main className="w-full mt-10 px-6 lg:mt-16 xl:mt-20">
+    <section
+      id="hero"
+      className="w-full min-h-screen flex items-center px-6 snap-start"
+    >
       <div className="sm:text-center lg:text-left">
         <h1 className="text-3xl tracking-tight font-bold text-gray-900 sm:text-4xl md:text-5xl leading-tight">
           <span className="block">{mainHero.title}</span>
@@ -32,11 +29,11 @@ const MainHero = () => {
           </span>
         </h1>
 
-        <p className="mt-3 text-sm text-gray-500 sm:mt-5 sm:text-base sm:max-w-xl sm:mx-auto md:mt-5 md:text-lg lg:mx-0">
+        <p className="mt-5 text-sm text-gray-500 sm:text-base sm:max-w-xl sm:mx-auto md:text-lg lg:mx-0">
           {mainHero.description}
         </p>
 
-        <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+        <div className="mt-8 sm:flex sm:justify-center lg:justify-start">
           <div className="rounded-md shadow">
             <a
               href={mainHero.primaryAction.href}
@@ -58,7 +55,7 @@ const MainHero = () => {
           )}
         </div>
       </div>
-    </main>
+    </section>
   );
 };
 

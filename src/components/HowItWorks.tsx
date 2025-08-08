@@ -7,6 +7,8 @@ const HowItWorks = () => {
   const { title, subtitle, description, steps } = config.howItWorks;
 
   return (
+    <section  id="works"
+      className="w-full min-h-screen flex flex-col justify-center items-center px-6 ">
     <div className="py-20 bg-white" id="how-it-works">
       <div className="max-w-4xl mx-auto text-center px-4">
         <h2 className="text-3xl font-bold text-primary">{title}</h2>
@@ -28,6 +30,7 @@ const HowItWorks = () => {
         ))}
       </div>
     </div>
+    </section>
   );
 };
 
