@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { Fragment, useEffect, useState } from 'react';
 
 import { Popover, Transition } from '@headlessui/react';
@@ -100,12 +101,19 @@ const Menu = () => {
                   Çıkış Yap
                 </button>
               ) : (
-                <a
-                  href="/login"
-                  className="text-sm text-white bg-red-600 px-3 py-1 rounded hover:bg-red-700"
-                >
-                  Giriş Yap
-                </a>
+                // eslint-disable-next-line @next/next/no-html-link-for-pages
+                <><a
+                    href="/login"
+                    className="text-sm text-white bg-red-600 px-3 py-1 rounded hover:bg-red-700"
+                  >
+                    Giriş Yap
+                  </a><a
+                    href="/register"
+                    className="text-sm text-red-600 border border-red-600 px-3 py-1 rounded hover:bg-red-100"
+                  >
+                    Kayıt Ol
+                    </a></>
+    
               )}
             </div>
           </nav>

@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import pool from '../../lib/lib/db'; // bu path doğru çünkü lib/lib içinde
+import pool from '../../lib/lib/db'; 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
