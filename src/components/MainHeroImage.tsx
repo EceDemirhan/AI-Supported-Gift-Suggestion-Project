@@ -9,7 +9,7 @@ const MainHeroImage = () => {
     <div
       className="relative w-full h-72 sm:h-96 md:h-[32rem] lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full overflow-hidden"
       style={{
-        clipPath: 'polygon(10% 0, 100% 0, 100% 100%, 0% 100%)', // Sağdan eğik kesim
+        clipPath: 'polygon(10% 0, 100% 0, 100% 100%, 0% 100%)', 
       }}
     >
       <img

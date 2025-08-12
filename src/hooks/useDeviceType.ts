@@ -18,10 +18,10 @@ export function useDeviceType() {
       else setDeviceType("desktop");
     };
 
-    // ilk ölçüm
+   
     check();
 
-    // hafif debounce
+
     let t: number | undefined;
     const onResize = () => {
       window.clearTimeout(t);

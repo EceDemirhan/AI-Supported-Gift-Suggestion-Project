@@ -9,7 +9,7 @@ const MainHero = () => {
   const mainHero = config.mainHero;
   const { deviceType } = useDeviceType();
 
-  // cihaz türüne göre fluid aralıklar
+ 
   const sizes = {
     mobile:  {
       title:   "clamp(24px, 7vw, 38px)",
@@ -36,12 +36,12 @@ const MainHero = () => {
       padX:    "clamp(22px, 1.6vw, 36px)",
     },
     desktop: {
-      title:   "clamp(36px, 3vw, 80px)",
+      title:   "clamp(36px, 3vw, 68px)",
       sub:     "clamp(22px, 1.8vw, 36px)",
-      body:    "clamp(16px, 0.9vw, 22px)",
+      body:    "clamp(10px, 0.9vw, 22px)",
       button:  "clamp(16px, 0.9vw, 22px)",
       padY:    "clamp(12px, 0.8vw, 18px)",
-      padX:    "clamp(24px, 1.2vw, 40px)",
+      padX:    "clamp(20px, 1.0vw, 40px)",
     },
   } as const;
 
