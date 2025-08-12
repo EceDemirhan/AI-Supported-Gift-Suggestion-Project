@@ -50,6 +50,7 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-xl transition hover:shadow-2xl duration-300">
         <img
           src="../assets/images/website-logo.png"

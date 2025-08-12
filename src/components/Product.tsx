@@ -213,16 +213,16 @@ const Product = ({
     <>
 
       <section
-        id="product"
-        className="relative min-h-screen flex items-center justify-center"
-        style={{
-          minHeight: '100vh',
-          width: '100%',
-          backgroundImage: "url('/assets/images/tasarım.png')",
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: deviceType === 'mobile' ? 'cover' : 'contain',
-          backgroundPosition: 'center',
-        }}
+id="product"
+  className="relative min-h-screen flex items-center justify-center"
+  style={{
+    minHeight: '100vh',
+    width: '100%',
+    backgroundImage: "url('/assets/images/formguncel.png')",
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',          // <-- TAM KAPLAR
+    backgroundPosition: 'center',
+  }}
       >
         <div className="absolute inset-0 bg-white bg-opacity-70 z-0" />
 
