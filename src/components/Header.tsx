@@ -68,7 +68,8 @@ const Menu = () => {
                 </div>
               </div>
             </div>
-            <div className="hidden md:flex md:items-center md:space-x-3 text-sm lg:text-base">
+           <div className="hidden md:flex md:items-center md:space-x-3 text-sm lg:text-base flex-nowrap whitespace-nowrap">
+
               {navigation.map((item) =>
                 item.href === 'favorimodal' ? (
                   <span

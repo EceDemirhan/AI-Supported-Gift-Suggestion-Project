@@ -7,8 +7,7 @@
     { "name": "Ana Sayfa", "href": "hero" },
     { "name": "Hediye Önerileri", "href": "product" },
     { "name": "Nasıl Çalışır?", "href": "howitworks" },
-    { "name": "Favoriler", "href": "favorimodal" },
-    { "name": "Kayıt Ol", "href": "register" }
+    { "name": "Favoriler", "href": "favorimodal" }
   ],
 
   "mainHero": {
