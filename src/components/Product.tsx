@@ -376,7 +376,7 @@ id="product"
             <div className="text-center">
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold rounded-lg hover:from-red-600 hover:to-pink-600 transition"
+                className="w-full bg-gradient-to-r from-red-600 to-red-400 text-white font-semibold rounded-lg hover:from-red-700 hover:to-red-500 transition"
                 disabled={loading}
                 style={{ fontSize: s.btn, padding: `${s.padY} ${s.padX}` }}
               >

@@ -2,8 +2,11 @@
 /* eslint-disable prettier/prettier */
 import React from "react";
 
+import { Link as ScrollLink } from "react-scroll";
+
 import config from "../config/index.json";
 import { useDeviceType } from "../hooks/useDeviceType";
+
 
 const MainHero = () => {
   const mainHero = config.mainHero;
@@ -62,23 +65,17 @@ const MainHero = () => {
         </p>
 
         <div className="mt-8 sm:flex sm:justify-center lg:justify-start">
-          <a
-            href={mainHero.primaryAction.href}
-            className="border border-transparent rounded-md text-background bg-primary hover:bg-border hover:text-primary"
-            style={{ fontSize: s.button, padding: `${s.padY} ${s.padX}` }}
-          >
-            {mainHero.primaryAction.text}
-          </a>
+<ScrollLink
+  to={mainHero.primaryAction.href}  
+  smooth={true}
+  duration={500}
+  offset={-80} 
+  className="bg-gradient-to-r from-red-600 to-red-400 hover:from-red-700 hover:to-red-500 text-white font-semibold rounded-lg transition disabled:opacity-60 cursor-pointer inline-block"
+  style={{ fontSize: s.button, padding: `${s.padY} ${s.padX}` }}
+>
+  {mainHero.primaryAction.text}
+</ScrollLink>
 
-          {mainHero.secondaryAction && (
-            <a
-              href={mainHero.secondaryAction.href}
-              className="mt-3 sm:mt-0 sm:ml-3 border border-transparent rounded-md border-primary text-secondary bg-background hover:bg-border hover:text-primary"
-              style={{ fontSize: s.button, padding: `${s.padY} ${s.padX}` }}
-            >
-              {mainHero.secondaryAction.text}
-            </a>
-          )}
         </div>
       </div>
     </section>

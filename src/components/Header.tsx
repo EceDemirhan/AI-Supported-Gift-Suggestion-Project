@@ -105,12 +105,12 @@ const Menu = () => {
                 // eslint-disable-next-line @next/next/no-html-link-for-pages
                 <><a
                     href="/login"
-                    className="text-sm text-white bg-red-600 px-3 py-1 rounded hover:bg-red-700"
+                    className="text-sm text-white bg-gradient-to-r from-red-600 to-red-400 hover:from-red-700 hover:to-red-500 px-3 py-1 rounded transition disabled:opacity-60"
                   >
                     Giriş Yap
                   </a><a
                     href="/register"
-                    className="text-sm text-red-600 border border-red-600 px-3 py-1 rounded hover:bg-red-100"
+                    className="text-sm text-red-600 border border-red-600 bg-white px-3 py-1 rounded hover:bg-red-50 active:bg-red-100 transition"
                   >
                     Kayıt Ol
                     </a></>
@@ -181,7 +181,7 @@ const Menu = () => {
                   // eslint-disable-next-line @next/next/no-html-link-for-pages
                   <a
                     href="/login"
-                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-red-600 hover:bg-red-700"
+                    className="text-sm text-red-600 border border-red-600 bg-white px-3 py-1 rounded hover:bg-red-50 active:bg-red-100 transition"
                   >
                     Giriş Yap
                   </a>

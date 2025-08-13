@@ -17,7 +17,7 @@
     "img": "/assets/images/deneme.jpg",
     "primaryAction": {
       "text": "Haydi Başlayalım!",
-      "href": "/oner"
+      "href": "product"
     }
   },
 
