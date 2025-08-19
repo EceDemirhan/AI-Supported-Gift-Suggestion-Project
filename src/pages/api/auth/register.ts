@@ -38,7 +38,7 @@ export default async function handler(
       : null;
 
   try {
-    // aynı email var mı?
+    
     const dupe = await pool.query(
       "SELECT 1 FROM public.users WHERE lower(email)=lower($1) LIMIT 1",
       [email]
@@ -47,7 +47,7 @@ export default async function handler(
       return reply(res, 409, "EMAIL_EXISTS", "Bu e-posta zaten kayıtlı.");
     }
 
-    // kullanıcı ekle (mail_verified=false ile)
+
     const ins = await pool.query(
       `INSERT INTO public.users (email, "password", ad, soyad, tel_no, mail_verified)
        VALUES ($1, crypt($2, gen_salt('bf', 12)), $3, $4, $5, false)
@@ -55,7 +55,6 @@ export default async function handler(
       [email, password, ad || null, soyad || null, tel]
     );
 
-    // doğrulama token + expiry oluştur
     const token = crypto.randomBytes(32).toString("hex");
     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 saat
 

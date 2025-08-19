@@ -30,7 +30,7 @@ export default async function handler(
   }
 
   try {
-    // kullanıcıyı getir
+    
     const q = await pool.query(
       `SELECT id, email, ad, soyad, mail_verified
          FROM public.users

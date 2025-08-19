@@ -47,7 +47,7 @@ console.log("Gelen veri:", req.body);
       });
     }
 
-    // ✔️ Yeni ID'lerle birlikte öneri listesi dönülür
+    
     res.status(200).json({ message: 'Tüm öneriler kaydedildi.', suggestions: insertedSuggestions });
   } catch (error) {
     console.error('Öneri kayıt hatası:', error);
