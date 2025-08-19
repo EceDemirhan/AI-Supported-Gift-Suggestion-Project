@@ -56,7 +56,7 @@ const Menu = () => {
                   <span className="sr-only">{companyName}</span>
                   <img
                     alt="logo"
-                    className="h-40 w-auto sm:h-44 lg:h-48"
+                    className="h-40 w-auto sm:h-36 lg:h-48"
                     src={logo}
                   />
                 </a>

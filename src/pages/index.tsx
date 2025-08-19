@@ -5,10 +5,8 @@ import { ToastContainer } from 'react-toastify';
 
 import About from '../components/About';
 import Analytics from '../components/Analytics';
-import Canvas from '../components/Canvas';
 import Header from '../components/Header';
 import HowItWorks from '../components/HowItWorks'; // Eğer bileşen components/HowItWorks.tsx içindeyse
-import LazyShow from '../components/LazyShow';
 import MainHero from '../components/MainHero';
 import MainHeroImage from '../components/MainHeroImage';
 import Product from '../components/Product';
@@ -34,29 +32,26 @@ const App = () => {
         <MainHeroImage />
         
       </div>
-      <Canvas />
-      <LazyShow>
+    
+     
         <>
           <Product  
           favoriler={favoriler}
   setFavoriler={setFavoriler}
   favoriModal={favoriModal}
   setFavoriModal={setFavoriModal} />
-          <Canvas />
+         
         </>
-      </LazyShow>
-  <LazyShow>
+      
+
   <div id="howitworks">
     <HowItWorks />
   </div>
-</LazyShow>
 
-      <LazyShow>
+
         <>
-          <Canvas />
           <About />
         </>
-      </LazyShow>
       <Analytics />
       <ToastContainer
   position="bottom-right"
