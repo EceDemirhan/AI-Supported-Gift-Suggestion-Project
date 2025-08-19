@@ -4,12 +4,24 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import pool from "../../../lib/lib/db";
 
 type ApiBody = { code: string; message: string } | any;
-const reply = (res: NextApiResponse<ApiBody>, status: number, code: string, message: string) =>
-  res.status(status).json({ code, message });
+const reply = (
+  res: NextApiResponse<ApiBody>,
+  status: number,
+  code: string,
+  message: string
+) => res.status(status).json({ code, message });
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiBody>) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ApiBody>
+) {
   if (req.method !== "POST") {
-    return reply(res, 405, "METHOD_NOT_ALLOWED", "Bu işlem için POST göndermeniz gerekir.");
+    return reply(
+      res,
+      405,
+      "METHOD_NOT_ALLOWED",
+      "Bu işlem için POST göndermeniz gerekir."
+    );
   }
 
   const { email, password } = req.body || {};
@@ -18,9 +30,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   try {
-    
+    // kullanıcıyı getir
     const q = await pool.query(
-      `SELECT id, email, ad, soyad
+      `SELECT id, email, ad, soyad, mail_verified
          FROM public.users
         WHERE email = $1
           AND "password" = crypt($2, "password")
@@ -29,12 +41,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     );
 
     if (q.rowCount === 0) {
-      return reply(res, 401, "INVALID_CREDENTIALS", "E-posta veya şifre hatalı.");
+      return reply(
+        res,
+        401,
+        "INVALID_CREDENTIALS",
+        "E-posta veya şifre hatalı."
+      );
     }
 
-    return res.status(200).json({ user: q.rows[0] });
+    const user = q.rows[0];
+
+    // mail_verified kontrolü
+    if (!user.mail_verified) {
+      return reply(
+        res,
+        403,
+        "EMAIL_NOT_VERIFIED",
+        "Lütfen önce e-postanızı doğrulayın."
+      );
+    }
+
+    return res.status(200).json({ user });
   } catch (e: any) {
     console.error("LOGIN_ERR:", e);
-    return reply(res, 500, "SERVER_ERROR", "Şu anda giriş yapılamıyor. Lütfen birazdan tekrar deneyin.");
+    return reply(
+      res,
+      500,
+      "SERVER_ERROR",
+      "Şu anda giriş yapılamıyor. Lütfen birazdan tekrar deneyin."
+    );
   }
 }
