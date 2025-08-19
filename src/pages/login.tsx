@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* pages/login.tsx */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
@@ -9,17 +9,32 @@ const LoginPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  // forgot states
+
   const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
   const [forgotMsg, setForgotMsg] = useState("");
   const [forgotLoading, setForgotLoading] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // Enter tuşu ile submit
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && !loading && !showForgot) {
+        const btn = document.getElementById("login-submit");
+        (btn as HTMLButtonElement)?.click();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [loading, showForgot]);
+
+  const handleLogin = async (e?: React.FormEvent) => {
+    e?.preventDefault?.();
+    if (loading) return;
+
     setErr(null);
     setLoading(true);
 
@@ -51,6 +66,7 @@ const LoginPage = () => {
   };
 
   const handleForgot = async () => {
+    if (forgotLoading) return;
     setForgotLoading(true);
     setForgotMsg("");
     try {
@@ -101,20 +117,41 @@ const LoginPage = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">Şifre</label>
-            <input
-              type="password"
-              autoComplete="current-password"
-              aria-invalid={Boolean(err && /şifre/i.test(err))}
-              className={`w-full mt-1 px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400 ${
-                err && /şifre/i.test(err) ? "border-red-400" : "border-gray-300"
-              }`}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="relative mt-1">
+              <input
+                type={showPwd ? "text" : "password"}
+                autoComplete="current-password"
+                aria-invalid={Boolean(err && /şifre/i.test(err))}
+                className={`w-full px-4 py-2 pr-10 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400 ${
+                  err && /şifre/i.test(err) ? "border-red-400" : "border-gray-300"
+                }`}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPwd((s) => !s)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-gray-500 hover:text-gray-700"
+                aria-label={showPwd ? "Şifreyi gizle" : "Şifreyi göster"}
+              >
+                {/* göz/gizli ikonları */}
+                {showPwd ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeWidth="2" d="M3 3l18 18M10.58 10.59A3 3 0 0012 15a3 3 0 002.42-4.41M9.88 5.1C10.56 5.03 11.27 5 12 5c6 0 9 5.5 9 5.5a14.8 14.8 0 01-3.06 3.58M6.59 6.58A14.8 14.8 0 003 10.5S6 16 12 16c1.03 0 2-.13 2.9-.36" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeWidth="2" d="M1 12s3-7 11-7 11 7 11 7-3 7-11 7S1 12 1 12z" />
+                    <circle cx="12" cy="12" r="3" strokeWidth="2" />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
 
           <button
+            id="login-submit"
             type="submit"
             disabled={loading}
             className="w-full bg-gradient-to-r from-red-600 to-red-400 hover:from-red-700 hover:to-red-500 text-white font-semibold py-2 rounded-lg transition disabled:opacity-60"
@@ -135,11 +172,11 @@ const LoginPage = () => {
           </div>
         </form>
 
-        
+       
         {showForgot && (
           <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-xl w-full max-w-sm shadow-xl">
-              <h2 className="text-lg font-semibold mb-3 text-center">Şifre Sıfırlama Talbei</h2>
+              <h2 className="text-lg font-semibold mb-3 text-center">Şifre Sıfırlama Talebi</h2>
               {forgotMsg && <p className="mb-2 text-sm text-gray-700 text-center">{forgotMsg}</p>}
               <input
                 type="email"

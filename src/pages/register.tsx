@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
@@ -10,6 +10,9 @@ type Errors = {
   confirmPassword?: string;
   general?: string;
 };
+
+const PWD_RULE =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/; // 8+, 1 küçük, 1 büyük, 1 sayı, 1 özel
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -23,24 +26,30 @@ export default function RegisterPage() {
   });
   const [errors, setErrors] = useState<Errors>({});
   const [loading, setLoading] = useState(false);
+  const [showPwd1, setShowPwd1] = useState(false);
+  const [showPwd2, setShowPwd2] = useState(false);
+
+  const isPwdValid = useMemo(() => PWD_RULE.test(form.password), [form.password]);
+  const isMatch = useMemo(() => form.password === form.confirmPassword, [form.password, form.confirmPassword]);
+  const canSubmit = !loading && form.email && isPwdValid && isMatch;
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((s) => ({ ...s, [name]: value }));
-   
     setErrors((s) => ({ ...s, [name]: undefined, general: undefined }));
   };
 
   const validate = (): Errors => {
     const e: Errors = {};
-    if (!form.email) e.email = "E-posta zorunludur.";
-    if (form.password.length < 8) e.password = "Şifre en az 8 karakter olmalıdır.";
-    if (form.password !== form.confirmPassword) e.confirmPassword = "Şifreler uyuşmuyor.";
+    if (!form.email.trim()) e.email = "E-posta zorunludur.";
+    if (!isPwdValid)
+      e.password = "En az 8, 1 büyük, 1 küçük, 1 sayı ve 1 özel karakter içermelidir.";
+    if (!isMatch) e.confirmPassword = "Şifreler uyuşmuyor.";
     return e;
   };
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (ev: React.FormEvent) => {
+    ev.preventDefault();
     const v = validate();
     if (Object.keys(v).length) {
       setErrors(v);
@@ -48,7 +57,7 @@ export default function RegisterPage() {
     }
 
     setLoading(true);
-    setErrors({}); 
+    setErrors({});
     try {
       const r = await fetch("/api/auth/register", {
         method: "POST",
@@ -57,33 +66,25 @@ export default function RegisterPage() {
           ad: form.ad || undefined,
           soyad: form.soyad || undefined,
           tel_no: form.tel_no || undefined,
-          email: form.email,
+          email: form.email.trim(),
           password: form.password,
         }),
       });
 
       let j: any = {};
-      try {
-        j = await r.json();
-      } catch {
-        /* ignore */
-      }
+      try { j = await r.json(); } catch {}
 
       if (r.status === 409) {
-        
         setErrors({ email: "Bu e-posta zaten kayıtlı." });
         return;
       }
       if (!r.ok) {
-        
         setErrors({ general: j?.message || "Kayıt sırasında bir sorun oluştu. Lütfen tekrar deneyin." });
-        
         if (j?.dev) console.error("REGISTER_DEV:", j.dev);
         return;
       }
 
-      
-      toast.success("Kayıt başarılı! Giriş yapabilirsiniz.");
+      toast.success("Kayıt başarılı! E‑posta doğrulamasını tamamlayın.");
       setTimeout(() => router.push("/login"), 1200);
     } catch {
       setErrors({ general: "Sunucuya ulaşılamadı. Lütfen birazdan tekrar deneyin." });
@@ -101,7 +102,6 @@ export default function RegisterPage() {
           className="mx-auto my-6 w-60 h-auto -mt-10"
         />
 
-      
         {errors.general && (
           <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-red-700">
             {errors.general}
@@ -150,43 +150,87 @@ export default function RegisterPage() {
             {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
           </div>
 
+          
           <div>
-            <input
-              type="password"
-              name="password"
-              placeholder="Şifre (min 8 karakter)"
-              required
-              autoComplete="new-password"
-              aria-invalid={Boolean(errors.password)}
-              className={`w-full border rounded-lg px-3 py-2 ${
-                errors.password ? "border-red-400" : "border-gray-300"
-              }`}
-              onChange={onChange}
-            />
-            {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password}</p>}
+            <div className="relative">
+              <input
+                type={showPwd1 ? "text" : "password"}
+                name="password"
+                placeholder="Şifre (min 8, 1 büyük, 1 küçük, 1 sayı, 1 özel)"
+                required
+                autoComplete="new-password"
+                aria-invalid={Boolean(errors.password)}
+                className={`w-full border rounded-lg px-3 py-2 pr-10 ${
+                  errors.password ? "border-red-400" : "border-gray-300"
+                }`}
+                onChange={onChange}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPwd1((s) => !s)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-gray-500 hover:text-gray-700"
+                aria-label={showPwd1 ? "Şifreyi gizle" : "Şifreyi göster"}
+              >
+                {showPwd1 ? (
+                  // eye-off
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeWidth="2" d="M3 3l18 18M10.58 10.59A3 3 0 0012 15a3 3 0 002.42-4.41M9.88 5.1C10.56 5.03 11.27 5 12 5c6 0 9 5.5 9 5.5a14.8 14.8 0 01-3.06 3.58M6.59 6.58A14.8 14.8 0 003 10.5S6 16 12 16c1.03 0 2-.13 2.9-.36" />
+                  </svg>
+                ) : (
+                  // eye
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeWidth="2" d="M1 12s3-7 11-7 11 7 11 7-3 7-11 7S1 12 1 12z" />
+                    <circle cx="12" cy="12" r="3" strokeWidth="2" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            <p className={`mt-1 text-xs ${isPwdValid || !form.password ? "text-gray-500" : "text-red-600"}`}>
+              En az 8 karakter, 1 büyük, 1 küçük, 1 sayı ve 1 özel karakter içermelidir.
+            </p>
           </div>
 
+          {/* Şifre (Tekrar) */}
           <div>
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Şifre (tekrar)"
-              required
-              autoComplete="new-password"
-              aria-invalid={Boolean(errors.confirmPassword)}
-              className={`w-full border rounded-lg px-3 py-2 ${
-                errors.confirmPassword ? "border-red-400" : "border-gray-300"
-              }`}
-              onChange={onChange}
-            />
-            {errors.confirmPassword && (
-              <p className="mt-1 text-xs text-red-600">{errors.confirmPassword}</p>
+            <div className="relative">
+              <input
+                type={showPwd2 ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Şifre (tekrar)"
+                required
+                autoComplete="new-password"
+                aria-invalid={Boolean(errors.confirmPassword)}
+                className={`w-full border rounded-lg px-3 py-2 pr-10 ${
+                  errors.confirmPassword ? "border-red-400" : "border-gray-300"
+                }`}
+                onChange={onChange}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPwd2((s) => !s)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-gray-500 hover:text-gray-700"
+                aria-label={showPwd2 ? "Şifreyi gizle" : "Şifreyi göster"}
+              >
+                {showPwd2 ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeWidth="2" d="M3 3l18 18M10.58 10.59A3 3 0 0012 15a3 3 0 002.42-4.41M9.88 5.1C10.56 5.03 11.27 5 12 5c6 0 9 5.5 9 5.5a14.8 14.8 0 01-3.06 3.58M6.59 6.58A14.8 14.8 0 003 10.5S6 16 12 16c1.03 0 2-.13 2.9-.36" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeWidth="2" d="M1 12s3-7 11-7 11 7 11 7-3 7-11 7S1 12 1 12z" />
+                    <circle cx="12" cy="12" r="3" strokeWidth="2" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            {!isMatch && form.confirmPassword && (
+              <p className="mt-1 text-xs text-red-600">Şifreler uyuşmuyor.</p>
             )}
           </div>
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={!canSubmit}
             className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg disabled:opacity-60"
           >
             {loading ? "Kaydediliyor..." : "Kayıt Ol"}
