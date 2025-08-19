@@ -172,8 +172,8 @@ const LoginPage = () => {
 <div className="mt-3 space-y-2 text-xs">
   <div className="rounded-md bg-gray-50 p-2">
     <div className="flex items-start gap-2">
-      <UserPlusIcon className="h-4 w-4 text-red-600 mt-0.5" />
-      <div className="text-xs text-center w-full"> {/* sadece yazılar ortalı */}
+      <UserPlusIcon className="h-6 w-6 text-red-600 mt-0.5" />
+      <div className="text-xs text-center w-full">
         <p className="text-gray-700">
           <span className="font-medium">Hesabınız yok mu?</span> Hemen kayıt olun.
         </p>
@@ -190,8 +190,8 @@ const LoginPage = () => {
 
   <div className="rounded-md bg-gray-50 p-2">
     <div className="flex items-start gap-2">
-      <KeyIcon className="h-4 w-4 text-red-600 mt-0.5" />
-      <div className="text-center w-full text-xs"> {/* yine yazılar ortalı */}
+      <KeyIcon className="h-6 w-6 text-red-600 mt-0.5" />
+      <div className="text-center w-full text-xs"> 
         <p className="text-gray-700">
           <span className="font-medium">Şifrenizi mi unuttunuz?</span> Mail adresinize link gönderelim.
         </p>

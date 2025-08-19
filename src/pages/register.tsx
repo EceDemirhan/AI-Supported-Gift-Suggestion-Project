@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { useState, useMemo } from "react";
 
+import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 
@@ -150,7 +151,7 @@ export default function RegisterPage() {
             {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
           </div>
 
-          
+          {/* Şifre */}
           <div>
             <div className="relative">
               <input
@@ -190,7 +191,6 @@ export default function RegisterPage() {
             </p>
           </div>
 
-          {/* Şifre (Tekrar) */}
           <div>
             <div className="relative">
               <input
@@ -236,6 +236,28 @@ export default function RegisterPage() {
             {loading ? "Kaydediliyor..." : "Kayıt Ol"}
           </button>
         </form>
+
+     
+        <div className="mt-3 space-y-2 text-xs">
+          <div className="rounded-md bg-gray-50 p-2">
+            <div className="flex items-start gap-2">
+              <ArrowRightOnRectangleIcon  className="h-6 w-6 text-red-600" />
+              <div className="w-full text-center">
+                <p className="text-gray-700">
+                  <span className="font-medium">Zaten hesabınız var mı?</span> Giriş yapın.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => router.push("/login")}
+                  className="mt-1 text-red-600 hover:text-red-700 hover:underline"
+                >
+                  Giriş Yap
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
