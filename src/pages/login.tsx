@@ -1,6 +1,15 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
+/* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
 /* pages/login.tsx */
 import { useEffect, useState } from "react";
+
+import {
+  EyeIcon,
+  EyeSlashIcon,
+  UserPlusIcon,
+  KeyIcon,
+} from "@heroicons/react/24/outline";
 
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
@@ -13,7 +22,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-
+  // forgot states
   const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
   const [forgotMsg, setForgotMsg] = useState("");
@@ -46,10 +55,17 @@ const LoginPage = () => {
       });
 
       let j: any = {};
-      try { j = await r.json(); } catch { /* ignore */ }
+      try {
+        j = await r.json();
+      } catch {
+        /* ignore */
+      }
 
       if (!r.ok) {
-        setErr(j?.message || (r.status === 401 ? "E-posta veya şifre hatalı." : "Giriş başarısız."));
+        setErr(
+          j?.message ||
+            (r.status === 401 ? "E-posta veya şifre hatalı." : "Giriş başarısız.")
+        );
         if (j?.dev) console.error("LOGIN_DEV:", j.dev);
         return;
       }
@@ -132,19 +148,13 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={() => setShowPwd((s) => !s)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-gray-500 hover:text-gray-700"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700"
                 aria-label={showPwd ? "Şifreyi gizle" : "Şifreyi göster"}
               >
-                {/* göz/gizli ikonları */}
                 {showPwd ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeWidth="2" d="M3 3l18 18M10.58 10.59A3 3 0 0012 15a3 3 0 002.42-4.41M9.88 5.1C10.56 5.03 11.27 5 12 5c6 0 9 5.5 9 5.5a14.8 14.8 0 01-3.06 3.58M6.59 6.58A14.8 14.8 0 003 10.5S6 16 12 16c1.03 0 2-.13 2.9-.36" />
-                  </svg>
+                  <EyeSlashIcon className="h-5 w-5" />
                 ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeWidth="2" d="M1 12s3-7 11-7 11 7 11 7-3 7-11 7S1 12 1 12z" />
-                    <circle cx="12" cy="12" r="3" strokeWidth="2" />
-                  </svg>
+                  <EyeIcon className="h-5 w-5" />
                 )}
               </button>
             </div>
@@ -159,25 +169,59 @@ const LoginPage = () => {
             {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
           </button>
 
-          <div className="flex items-center justify-between text-sm text-gray-500">
-            <button
-              type="button"
-              onClick={() => { setShowForgot(true); setForgotMsg(""); setForgotEmail(email || ""); }}
-              className="text-red-600 hover:underline"
-            >
-              Şifremi Unuttum
-            </button>
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-            <a href="/register" className="text-red-600 hover:underline">Kayıt Ol</a>
-          </div>
+<div className="mt-3 space-y-2 text-xs">
+  <div className="rounded-md bg-gray-50 p-2">
+    <div className="flex items-start gap-2">
+      <UserPlusIcon className="h-4 w-4 text-red-600 mt-0.5" />
+      <div className="text-xs text-center w-full"> {/* sadece yazılar ortalı */}
+        <p className="text-gray-700">
+          <span className="font-medium">Hesabınız yok mu?</span> Hemen kayıt olun.
+        </p>
+    <button
+  type="button"
+  onClick={() => router.push("/register")}
+  className="mt-2 text-red-600 hover:text-red-700 hover:underline"
+>
+  Kayıt Ol
+</button>
+      </div>
+    </div>
+  </div>
+
+  <div className="rounded-md bg-gray-50 p-2">
+    <div className="flex items-start gap-2">
+      <KeyIcon className="h-4 w-4 text-red-600 mt-0.5" />
+      <div className="text-center w-full text-xs"> {/* yine yazılar ortalı */}
+        <p className="text-gray-700">
+          <span className="font-medium">Şifrenizi mi unuttunuz?</span> Mail adresinize link gönderelim.
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            setShowForgot(true);
+            setForgotMsg("");
+            setForgotEmail(email || "");
+          }}
+          className="mt-1 text-red-600 hover:text-red-700 hover:underline"
+        >
+          Şifremi Unuttum
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
         </form>
 
-       
+        
         {showForgot && (
           <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-xl w-full max-w-sm shadow-xl">
               <h2 className="text-lg font-semibold mb-3 text-center">Şifre Sıfırlama Talebi</h2>
-              {forgotMsg && <p className="mb-2 text-sm text-gray-700 text-center">{forgotMsg}</p>}
+              {forgotMsg && (
+                <p className="mb-2 text-sm text-gray-700 text-center">{forgotMsg}</p>
+              )}
               <input
                 type="email"
                 placeholder="E-posta adresiniz"
@@ -187,7 +231,10 @@ const LoginPage = () => {
               />
               <div className="flex justify-end gap-2">
                 <button
-                  onClick={() => { setShowForgot(false); setForgotMsg(""); }}
+                  onClick={() => {
+                    setShowForgot(false);
+                    setForgotMsg("");
+                  }}
                   className="px-3 py-2 text-gray-600"
                 >
                   Kapat

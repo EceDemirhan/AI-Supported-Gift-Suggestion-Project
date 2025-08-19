@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from "react";
 
-import { Popover, Transition } from '@headlessui/react';
-import { MenuIcon, XIcon } from '@heroicons/react/outline';
-import { Link } from 'react-scroll';
+import { Popover, Transition } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-scroll";
 
-import config from '../config/index.json';
+import config from "../config/index.json";
 
 const Menu = () => {
   const { navigation, company } = config;
@@ -14,21 +14,21 @@ const Menu = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const loginStatus = localStorage.getItem('isLoggedIn') === 'true';
+    const loginStatus = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loginStatus);
   }, []);
 
   const handleFavoriClick = () => {
     if (isLoggedIn) {
-      window.dispatchEvent(new CustomEvent('show-favori-modal'));
+      window.dispatchEvent(new CustomEvent("show-favori-modal"));
     } else {
-      window.dispatchEvent(new CustomEvent('show-login-modal'));
+      window.dispatchEvent(new CustomEvent("show-login-modal"));
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userEmail');
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userEmail");
     window.location.reload();
   };
 
@@ -54,24 +54,22 @@ const Menu = () => {
               <div className="flex items-center gap-4">
                 <a href="#" className="logo-link">
                   <span className="sr-only">{companyName}</span>
-                  <img
-                    alt="logo"
-                    className="h-40 w-auto sm:h-36 lg:h-48"
-                    src={logo}
-                  />
+                  <img alt="logo" className="h-40 w-auto sm:h-36 lg:h-48" src={logo} />
                 </a>
+
+                {/* Mobile menu button */}
                 <div className="-mr-2 flex items-center md:hidden">
                   <Popover.Button className="bg-background rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary">
                     <span className="sr-only">Open main menu</span>
-                    <MenuIcon className="h-6 w-6" aria-hidden="true" />
+                    <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>
                 </div>
               </div>
             </div>
-           <div className="hidden md:flex md:items-center md:space-x-3 text-sm lg:text-base flex-nowrap whitespace-nowrap">
 
+            <div className="hidden md:flex md:items-center md:space-x-3 text-sm lg:text-base flex-nowrap whitespace-nowrap">
               {navigation.map((item) =>
-                item.href === 'favorimodal' ? (
+                item.href === "favorimodal" ? (
                   <span
                     key={item.name}
                     onClick={handleFavoriClick}
@@ -102,19 +100,22 @@ const Menu = () => {
                   Çıkış Yap
                 </button>
               ) : (
-                // eslint-disable-next-line @next/next/no-html-link-for-pages
-                <><a
+                <>
+                  {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                  <a
                     href="/login"
                     className="text-sm text-white bg-gradient-to-r from-red-600 to-red-400 hover:from-red-700 hover:to-red-500 px-3 py-1 rounded transition disabled:opacity-60"
                   >
                     Giriş Yap
-                  </a><a
+                  </a>
+                  {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                  <a
                     href="/register"
                     className="text-sm text-red-600 border border-red-600 bg-white px-3 py-1 rounded hover:bg-red-50 active:bg-red-100 transition"
                   >
                     Kayıt Ol
-                    </a></>
-    
+                  </a>
+                </>
               )}
             </div>
           </nav>
@@ -141,13 +142,14 @@ const Menu = () => {
                 <div className="-mr-2">
                   <Popover.Button className="bg-background rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary">
                     <span className="sr-only">Close main menu</span>
-                    <XIcon className="h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>
                 </div>
               </div>
+
               <div className="px-2 pt-2 pb-3 space-y-1">
                 {navigation.map((item) =>
-                  item.href === 'favorimodal' ? (
+                  item.href === "favorimodal" ? (
                     <span
                       key={item.name}
                       onClick={handleFavoriClick}
@@ -181,7 +183,7 @@ const Menu = () => {
                   // eslint-disable-next-line @next/next/no-html-link-for-pages
                   <a
                     href="/login"
-                    className="text-sm text-red-600 border border-red-600 bg-white px-3 py-1 rounded hover:bg-red-50 active:bg-red-100 transition"
+                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-100"
                   >
                     Giriş Yap
                   </a>
