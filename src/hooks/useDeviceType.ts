@@ -12,10 +12,11 @@ export function useDeviceType() {
     const check = () => {
       const w = window.innerWidth;
       setWidth(w);
-      if (w <= 767) setDeviceType("mobile");
-      else if (w <= 1023) setDeviceType("tablet");
-      else if (w <= 1366) setDeviceType("laptop");
-      else setDeviceType("desktop");
+if (w <= 767) setDeviceType("mobile");
+else if (w <= 1199) setDeviceType("tablet");   // 768–1199
+else if (w <= 1600) setDeviceType("laptop");   // 1200–1600
+else setDeviceType("desktop");                 // 1600+
+
     };
 
    

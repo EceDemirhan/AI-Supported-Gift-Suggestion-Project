@@ -33,7 +33,11 @@ export default function RegisterPage() {
   const isPwdValid = useMemo(() => PWD_RULE.test(form.password), [form.password]);
   const isMatch = useMemo(() => form.password === form.confirmPassword, [form.password, form.confirmPassword]);
   const canSubmit = !loading && form.email && isPwdValid && isMatch;
+const isPwdPresent = form.password.length > 0;
+const showPwdHint = isPwdPresent && !isPwdValid;
 
+const isConfirmPresent = form.confirmPassword.length > 0;
+const showConfirmError = isConfirmPresent && !isMatch;
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((s) => ({ ...s, [name]: value }));
@@ -152,81 +156,83 @@ export default function RegisterPage() {
           </div>
 
           {/* Şifre */}
-          <div>
-            <div className="relative">
-              <input
-                type={showPwd1 ? "text" : "password"}
-                name="password"
-                placeholder="Şifre (min 8, 1 büyük, 1 küçük, 1 sayı, 1 özel)"
-                required
-                autoComplete="new-password"
-                aria-invalid={Boolean(errors.password)}
-                className={`w-full border rounded-lg px-3 py-2 pr-10 ${
-                  errors.password ? "border-red-400" : "border-gray-300"
-                }`}
-                onChange={onChange}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPwd1((s) => !s)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-gray-500 hover:text-gray-700"
-                aria-label={showPwd1 ? "Şifreyi gizle" : "Şifreyi göster"}
-              >
-                {showPwd1 ? (
-                  // eye-off
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeWidth="2" d="M3 3l18 18M10.58 10.59A3 3 0 0012 15a3 3 0 002.42-4.41M9.88 5.1C10.56 5.03 11.27 5 12 5c6 0 9 5.5 9 5.5a14.8 14.8 0 01-3.06 3.58M6.59 6.58A14.8 14.8 0 003 10.5S6 16 12 16c1.03 0 2-.13 2.9-.36" />
-                  </svg>
-                ) : (
-                  // eye
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeWidth="2" d="M1 12s3-7 11-7 11 7 11 7-3 7-11 7S1 12 1 12z" />
-                    <circle cx="12" cy="12" r="3" strokeWidth="2" />
-                  </svg>
-                )}
-              </button>
-            </div>
-            <p className={`mt-1 text-xs ${isPwdValid || !form.password ? "text-gray-500" : "text-red-600"}`}>
-              En az 8 karakter, 1 büyük, 1 küçük, 1 sayı ve 1 özel karakter içermelidir.
-            </p>
-          </div>
+         {/* Şifre */}
+<div>
+  <div className="relative">
+    <input
+      type={showPwd1 ? "text" : "password"}
+      name="password"
+      placeholder="Şifre"
+      required
+      autoComplete="new-password"
+      aria-invalid={showPwdHint}
+      className={`w-full border rounded-lg px-3 py-2 pr-10 ${
+        showPwdHint ? "border-red-400" : "border-gray-300"
+      }`}
+      onChange={onChange}
+    />
+    <button
+      type="button"
+      onClick={() => setShowPwd1((s) => !s)}
+      className="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-gray-500 hover:text-gray-700"
+      aria-label={showPwd1 ? "Şifreyi gizle" : "Şifreyi göster"}
+    >
+      {showPwd1 ? (
+        /* eye-off svg */
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path strokeWidth="2" d="M3 3l18 18M10.58 10.59A3 3 0 0012 15a3 3 0 002.42-4.41M9.88 5.1C10.56 5.03 11.27 5 12 5c6 0 9 5.5 9 5.5a14.8 14.8 0 01-3.06 3.58M6.59 6.58A14.8 14.8 0 003 10.5S6 16 12 16c1.03 0 2-.13 2.9-.36" />
+        </svg>
+      ) : (
+        /* eye svg */
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path strokeWidth="2" d="M1 12s3-7 11-7 11 7 11 7-3 7-11 7S1 12 1 12z" />
+          <circle cx="12" cy="12" r="3" strokeWidth="2" />
+        </svg>
+      )}
+    </button>
+  </div>
 
-          <div>
-            <div className="relative">
-              <input
-                type={showPwd2 ? "text" : "password"}
-                name="confirmPassword"
-                placeholder="Şifre (tekrar)"
-                required
-                autoComplete="new-password"
-                aria-invalid={Boolean(errors.confirmPassword)}
-                className={`w-full border rounded-lg px-3 py-2 pr-10 ${
-                  errors.confirmPassword ? "border-red-400" : "border-gray-300"
-                }`}
-                onChange={onChange}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPwd2((s) => !s)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-gray-500 hover:text-gray-700"
-                aria-label={showPwd2 ? "Şifreyi gizle" : "Şifreyi göster"}
-              >
-                {showPwd2 ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeWidth="2" d="M3 3l18 18M10.58 10.59A3 3 0 0012 15a3 3 0 002.42-4.41M9.88 5.1C10.56 5.03 11.27 5 12 5c6 0 9 5.5 9 5.5a14.8 14.8 0 01-3.06 3.58M6.59 6.58A14.8 14.8 0 003 10.5S6 16 12 16c1.03 0 2-.13 2.9-.36" />
-                  </svg>
-                ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeWidth="2" d="M1 12s3-7 11-7 11 7 11 7-3 7-11 7S1 12 1 12z" />
-                    <circle cx="12" cy="12" r="3" strokeWidth="2" />
-                  </svg>
-                )}
-              </button>
-            </div>
-            {!isMatch && form.confirmPassword && (
-              <p className="mt-1 text-xs text-red-600">Şifreler uyuşmuyor.</p>
-            )}
-          </div>
+  {/* YALNIZCA geçersizken göster */}
+  {showPwdHint && (
+    <p className="mt-1 text-xs text-red-600">
+      En az 8 karakter, 1 büyük, 1 küçük, 1 sayı ve 1 özel karakter içermelidir.
+    </p>
+  )}
+</div>
+
+
+<div>
+  <div className="relative">
+    <input
+      type={showPwd2 ? "text" : "password"}
+      name="confirmPassword"
+      placeholder="Şifre (tekrar)"
+      required
+      autoComplete="new-password"
+      aria-invalid={showConfirmError}
+      className={`w-full border rounded-lg px-3 py-2 pr-10 ${
+        showConfirmError ? "border-red-400" : "border-gray-300"
+      }`}
+      onChange={onChange}
+    />
+    <button
+      type="button"
+      onClick={() => setShowPwd2((s) => !s)}
+      className="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-gray-500 hover:text-gray-700"
+      aria-label={showPwd2 ? "Şifreyi gizle" : "Şifreyi göster"}
+    >
+      {/* aynı svg'ler */}
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path strokeWidth="2" d="M1 12s3-7 11-7 11 7 11 7-3 7-11 7S1 12 1 12z" />
+        <circle cx="12" cy="12" r="3" strokeWidth="2" />
+      </svg>
+    </button>
+  </div>
+
+  {showConfirmError && (
+    <p className="mt-1 text-xs text-red-600">Şifreler uyuşmuyor.</p>
+  )}
+</div>
 
           <button
             type="submit"
