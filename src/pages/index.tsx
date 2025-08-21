@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 
-import { ToastContainer } from 'react-toastify';
 
 import About from '../components/About';
 import Analytics from '../components/Analytics';
@@ -53,17 +52,7 @@ const App = () => {
           <About />
         </>
       <Analytics />
-      <ToastContainer
-  position="bottom-right"
-  autoClose={2000}
-  hideProgressBar={false}
-  newestOnTop={false}
-  closeOnClick
-  rtl={false}
-  pauseOnFocusLoss
-  draggable
-  pauseOnHover
-/>
+
 
     </div>
   );
