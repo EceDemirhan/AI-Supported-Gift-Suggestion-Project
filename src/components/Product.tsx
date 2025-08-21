@@ -1,55 +1,75 @@
+/* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect, useRef } from "react";
 
 import confetti from "canvas-confetti";
 import { toast } from "react-toastify";
 
-// eslint-disable-next-line import/order
 import { getGiftSuggestions } from "../lib/gemini";
 
 import "react-toastify/dist/ReactToastify.css";
 import LoginRequiredModal from "./LoginRequiredModal";
-// eslint-disable-next-line import/order
 import { useDeviceType } from "../hooks/useDeviceType";
 
 const sizes = {
-  mobile: {
-    title:  "clamp(24px, 7vw, 38px)",
-    sub:    "clamp(16px, 4.5vw, 24px)",
-    body:   "clamp(14px, 3.6vw, 18px)",
-    button: "clamp(14px, 3.6vw, 18px)",
-    padY:   "clamp(10px, 2.8vw, 14px)",
-    padX:   "clamp(18px, 5.5vw, 26px)",
-    formWidth: "clamp(300px, 92vw, 520px)",
-  },
-  tablet: {
-    title:  "clamp(28px, 5.2vw, 42px)",
-    sub:    "clamp(18px, 3.2vw, 26px)",
-    body:   "clamp(15px, 2.2vw, 18px)",
-    button: "clamp(15px, 2.2vw, 18px)",
-    padY:   "clamp(10px, 1.8vw, 14px)",
-    padX:   "clamp(20px, 3.4vw, 28px)",
-    formWidth: "clamp(360px, 78vw, 620px)",
-  },
-  laptop: {
-    title:  "clamp(26px, 2.6vw, 38px)",
-    sub:    "clamp(17px, 1.8vw, 24px)",
-    body:   "clamp(14px, 1.1vw, 17px)",
-    button: "clamp(14px, 1.1vw, 17px)",
-    padY:   "clamp(8px, 0.9vw, 12px)",
-    padX:   "clamp(16px, 1.2vw, 22px)",
-    formWidth: "clamp(420px, 56vw, 680px)",
-  },
-  desktop: {
-    title:  "clamp(36px, 3vw, 56px)",
-    sub:    "clamp(22px, 1.8vw, 30px)",
-    body:   "clamp(16px, 0.9vw, 36px)",
-    button: "clamp(16px, 1vw, 20px)",
-    padY:   "clamp(12px, 0.8vw, 18px)",
-    padX:   "clamp(20px, 1.2vw, 40px)",
-    formWidth: "clamp(480px, 44vw, 820px)",
-  },
+  mobile: { title:"clamp(24px, 7vw, 38px)", sub:"clamp(16px, 4.5vw, 24px)", body:"clamp(14px, 3.6vw, 18px)", button:"clamp(14px, 3.6vw, 18px)", padY:"clamp(10px, 2.8vw, 14px)", padX:"clamp(18px, 5.5vw, 26px)", formWidth:"clamp(300px, 92vw, 520px)" },
+  tablet: { title:"clamp(28px, 5.2vw, 42px)", sub:"clamp(18px, 3.2vw, 26px)", body:"clamp(15px, 2.2vw, 18px)", button:"clamp(15px, 2.2vw, 18px)", padY:"clamp(10px, 1.8vw, 14px)", padX:"clamp(20px, 3.4vw, 28px)", formWidth:"clamp(360px, 78vw, 620px)" },
+  laptop: { title:"clamp(26px, 2.6vw, 38px)", sub:"clamp(17px, 1.8vw, 24px)", body:"clamp(14px, 1.1vw, 17px)", button:"clamp(14px, 1.1vw, 17px)", padY:"clamp(8px, 0.9vw, 12px)", padX:"clamp(16px, 1.2vw, 22px)", formWidth:"clamp(420px, 56vw, 680px)" },
+  desktop: { title:"clamp(36px, 3vw, 56px)", sub:"clamp(22px, 1.8vw, 30px)", body:"clamp(16px, 0.9vw, 36px)", button:"clamp(16px, 1vw, 20px)", padY:"clamp(12px, 0.8vw, 18px)", padX:"clamp(20px, 1.2vw, 40px)", formWidth:"clamp(480px, 44vw, 820px)" },
 } as const;
+
+/* ---------- Seçenekler ---------- */
+const RELATION_OPTIONS = [
+  "Anne",
+  "Baba",
+  "Kardeş",
+  "Sevgili",
+  "Arkadaş",
+  "İş Arkadaşı",
+  "Öğretmen",
+  "Eş",
+  "Çocuk",
+] as const;
+
+type Relation = (typeof RELATION_OPTIONS)[number];
+
+const GENDERS = ["Kadın", "Erkek", "Belirtmek İstemiyor"] as const;
+
+const genderOptionsForRelation = (r: Relation | ""): readonly string[] => {
+  if (r === "Anne") return ["Kadın", "Belirtmek İstemiyor"] as const;
+  if (r === "Baba") return ["Erkek", "Belirtmek İstemiyor"] as const;
+  return GENDERS; // diğer tüm ilişkilerde hepsi açık
+};
+
+const OCCASION_OPTIONS = [
+  "Doğum Günü",
+  "Evlilik Yıldönümü",
+  "Sevgililer Günü",
+  "Yılbaşı",
+  "Anneler Günü",
+  "Babalar Günü",
+  "Mezuniyet",
+  "Yeni İş/Terfi",
+  "Yeni Ev",
+  "Nişan/Düğün",
+  "Geçmiş Olsun",
+  "Teşekkür",
+  "Sınav Başarısı",
+  "Diğer",
+];
+
+const KATEGORI_SECENEKLERI = [
+  "Kıyafet",
+  "Ayakkabı",
+  "Aksesuar",
+  "Elektronik",
+  "Ev Eşyası",
+  "Kitap",
+  "Kozmetik",
+  "Oyun/Hobi",
+  "Spor/Outdoor",
+  "Mutfak",
+];
 
 const Product = ({
   favoriModal,
@@ -66,7 +86,7 @@ const Product = ({
   const s = sizes[deviceType];
 
   const [form, setForm] = useState({
-    kime: "",
+    kime: "" as Relation | "",
     neden: "",
     yas: "",
     cinsiyet: "",
@@ -74,16 +94,24 @@ const Product = ({
     sevdigi: "",
     hobiler: "",
     kategoriler: [] as string[],
+   
   });
+
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [animatedHeartId, setAnimatedHeartId] = useState<string | null>(null);
-
   const [oneriler, setOneriler] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  // >>> Kaydırma için ref
+  // Auto-scroll
   const suggestionsRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (oneriler && oneriler.length >= 3 && suggestionsRef.current) {
+      const el = suggestionsRef.current;
+      const y = el.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  }, [oneriler]);
 
   useEffect(() => {
     const handler = () => setFavoriModal(true);
@@ -96,15 +124,14 @@ const Product = ({
     setIsAuthenticated(loggedIn);
   }, []);
 
-  // >>> Öneriler geldikten sonra otomatik kaydır
-  useEffect(() => {
-    if (oneriler && oneriler.length >= 3 && suggestionsRef.current) {
-      const el = suggestionsRef.current;
-      const headerOffset = 80; // sabit header yüksekliğin varsa ayarla
-      const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
-  }, [oneriler]);
+const currentGenderOptions = genderOptionsForRelation(form.kime);
+
+useEffect(() => {
+  if (form.cinsiyet && !currentGenderOptions.includes(form.cinsiyet as any)) {
+    setForm((p) => ({ ...p, cinsiyet: "" })); 
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [form.kime]);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -115,7 +142,7 @@ const Product = ({
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleKategoriToggle = (kategori: string) => {
+  const toggleKategori = (kategori: string) => {
     setForm((prev) => {
       const secili = prev.kategoriler.includes(kategori)
         ? prev.kategoriler.filter((k) => k !== kategori)
@@ -142,8 +169,8 @@ const Product = ({
           kullanici_id: 1, // TODO: login’den al
           kime_hediye: form.kime,
           neden_hediye: form.neden,
-          yas: Number(form.yas),
-          cinsiyet: form.cinsiyet,
+          yas: Number(form.yas || 0),
+          cinsiyet: form.cinsiyet, // Anne/Baba için seçilebilir; diğerlerinde boş kalır
           burc: form.burc,
           sevdigi_medya: form.sevdigi,
           hobiler: form.hobiler,
@@ -213,18 +240,10 @@ const Product = ({
     setTimeout(() => setAnimatedHeartId(null), 350);
   };
 
-  const kategoriSecenekleri = [
-    "Kıyafet",
-    "Ayakkabı",
-    "Ev Eşyası",
-    "Aksesuar",
-    "Elektronik",
-    "Kitap",
-    "Kozmetik",
-  ];
 
   return (
     <>
+      {/* FORM */}
       <section
         id="product"
         className="relative min-h-screen flex items-center justify-center"
@@ -251,12 +270,10 @@ const Product = ({
               Hediye Öneri Formu
             </h2>
 
+            {/* Kime & Neden */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label
-                  className="block font-medium text-gray-900"
-                  style={{ fontSize: s.body }}
-                >
+                <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
                   Kime hediye alıyorsun? *
                 </label>
                 <select
@@ -264,23 +281,20 @@ const Product = ({
                   value={form.kime}
                   onChange={handleInputChange}
                   required
-                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900 placeholder-gray-400"
+                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900"
                   style={{ fontSize: s.body }}
                 >
                   <option value="">Seçiniz</option>
-                  <option>Anne</option>
-                  <option>Baba</option>
-                  <option>Sevgili</option>
-                  <option>Arkadaş</option>
-                  <option>Eş</option>
+                  {RELATION_OPTIONS.map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
                 </select>
               </div>
 
               <div>
-                <label
-                  className="block font-medium text-gray-900"
-                  style={{ fontSize: s.body }}
-                >
+                <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
                   Ne için alıyorsun? *
                 </label>
                 <select
@@ -288,24 +302,23 @@ const Product = ({
                   value={form.neden}
                   onChange={handleInputChange}
                   required
-                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900 placeholder-gray-400"
+                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900"
                   style={{ fontSize: s.body }}
                 >
                   <option value="">Seçiniz</option>
-                  <option>Doğum Günü</option>
-                  <option>Evlilik Yıldönümü</option>
-                  <option>Terfi</option>
-                  <option>Diğer</option>
+                  {OCCASION_OPTIONS.map((o) => (
+                    <option key={o} value={o}>
+                      {o}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
 
+            {/* Yaş - (Cinsiyet koşullu) - Burç */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label
-                  className="block font-medium text-gray-900"
-                  style={{ fontSize: s.body }}
-                >
+                <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
                   Yaşı
                 </label>
                 <input
@@ -313,38 +326,38 @@ const Product = ({
                   name="yas"
                   value={form.yas}
                   onChange={handleInputChange}
-                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900 placeholder-gray-400"
+                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900"
                   style={{ fontSize: s.body }}
                 />
               </div>
 
-              <div>
-                <label
-                  className="block font-medium text-gray-900"
-                  style={{ fontSize: s.body }}
-                >
-                  Cinsiyet *
-                </label>
-                <select
-                  name="cinsiyet"
-                  value={form.cinsiyet}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900 placeholder-gray-400"
-                  style={{ fontSize: s.body }}
-                >
-                  <option value="">Seçiniz</option>
-                  <option>Kadın</option>
-                  <option>Erkek</option>
-                  <option>Belirtmek İstemiyor</option>
-                </select>
-              </div>
+              {/* Cinsiyet sadece Anne/Baba için gösterilir */}
+              {currentGenderOptions !== null && (
+                <div>
+                  <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
+                    Cinsiyet *
+                  </label>
+                  <select
+                    name="cinsiyet"
+                    value={form.cinsiyet}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full border rounded px-3 py-2 mt-1 text-gray-900"
+                    style={{ fontSize: s.body }}
+                  >
+                    <option value="">Seçiniz</option>
+                    {currentGenderOptions.map((g) => (
+                      <option key={g} value={g}>
+                        {g}
+                      </option>
+                    ))}
+                  </select>
+                  
+                </div>
+              )}
 
               <div>
-                <label
-                  className="block font-medium text-gray-900"
-                  style={{ fontSize: s.body }}
-                >
+                <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
                   Burç
                 </label>
                 <input
@@ -352,46 +365,42 @@ const Product = ({
                   name="burc"
                   value={form.burc}
                   onChange={handleInputChange}
-                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900 placeholder-gray-400"
+                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900"
                   style={{ fontSize: s.body }}
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Sevdiği & Hobi */}
+            <div className="grid grid-cols-1 md-grid-cols-2 md:grid-cols-2 gap-4">
               <div>
-                <label
-                  className="block font-medium text-gray-900"
-                  style={{ fontSize: s.body }}
-                >
+                <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
                   Sevdiği dizi, film veya müzik
                 </label>
                 <textarea
                   name="sevdigi"
                   value={form.sevdigi}
                   onChange={handleInputChange}
-                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900 placeholder-gray-400"
+                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900"
                   style={{ fontSize: s.body }}
                 />
               </div>
 
               <div>
-                <label
-                  className="block font-medium text-gray-900"
-                  style={{ fontSize: s.body }}
-                >
+                <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
                   Hobileri
                 </label>
                 <textarea
                   name="hobiler"
                   value={form.hobiler}
                   onChange={handleInputChange}
-                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900 placeholder-gray-400"
+                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900"
                   style={{ fontSize: s.body }}
                 />
               </div>
             </div>
 
+            {/* Kategori Tercihleri */}
             <div>
               <label
                 className="block font-medium text-gray-900 mb-2"
@@ -400,7 +409,7 @@ const Product = ({
                 Kategori Tercihleri *
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-gray-50 border rounded px-4 py-4">
-                {kategoriSecenekleri.map((kategori) => (
+                {KATEGORI_SECENEKLERI.map((kategori) => (
                   <label
                     key={kategori}
                     className="inline-flex items-center space-x-2 text-gray-900"
@@ -410,7 +419,7 @@ const Product = ({
                       type="checkbox"
                       value={kategori}
                       checked={form.kategoriler.includes(kategori)}
-                      onChange={() => handleKategoriToggle(kategori)}
+                      onChange={() => toggleKategori(kategori)}
                       className="form-checkbox text-primary"
                     />
                     <span>{kategori}</span>
@@ -418,6 +427,7 @@ const Product = ({
                 ))}
               </div>
             </div>
+
 
             <div className="text-center">
               <button
@@ -433,12 +443,9 @@ const Product = ({
         </div>
       </section>
 
+      {/* ÖNERİLER */}
       {oneriler?.length >= 3 && (
-        <section
-          ref={suggestionsRef}
-          className="bg-white py-12"
-          id="pricing"
-        >
+        <section ref={suggestionsRef} className="bg-white py-12" id="pricing">
           <div className="container mx-auto px-4">
             <h1
               className="font-bold text-center text-primary mb-6"
@@ -498,19 +505,23 @@ const Product = ({
                   </div>
 
                   <div className="mt-4 text-center">
-                    <a
-                      href={
-                        item.link?.startsWith("http")
-                          ? item.link
-                          : `https://${item.link}`
+                    {/* a yerine button: underline problemi yok */}
+                    <button
+                      onClick={() =>
+                        window.open(
+                          item.link?.startsWith("http")
+                            ? item.link
+                            : `https://${item.link}`,
+                          "_blank",
+                          "noopener,noreferrer"
+                        )
                       }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-medium text-red-600 no-underline underline decoration-red-600 decoration-2 hover:text-red-700"
+                      className="font-medium text-red-600 border-b-2 border-transparent hover:border-red-600 hover:text-red-700 transition"
                       style={{ fontSize: s.button }}
+                      type="button"
                     >
                       Ürünü Gör
-                    </a>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -519,6 +530,7 @@ const Product = ({
         </section>
       )}
 
+      {/* Favoriler Modal */}
       {favoriModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg w-full max-w-xl relative">
@@ -555,19 +567,22 @@ const Product = ({
                     <span className="font-medium" style={{ fontSize: s.body }}>
                       {item.baslik}
                     </span>
-                    <a
-                      href={
-                        item.link?.startsWith("http")
-                          ? item.link
-                          : `https://${item.link}`
+                    <button
+                      onClick={() =>
+                        window.open(
+                          item.link?.startsWith("http")
+                            ? item.link
+                            : `https://${item.link}`,
+                          "_blank",
+                          "noopener,noreferrer"
+                        )
                       }
-                      target="_blank"
-                      rel="noreferrer"
-                      className="font-medium text-red-600 no-underline underline decoration-red-600 decoration-2 hover:text-red-700"
+                      className="text-red-600 border-b-2 border-transparent hover:border-red-600 hover:text-red-700 transition"
                       style={{ fontSize: s.button }}
+                      type="button"
                     >
                       Ürünü Gör
-                    </a>
+                    </button>
                   </li>
                 ))
               )}
