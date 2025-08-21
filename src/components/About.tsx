@@ -13,31 +13,31 @@ const About = () => {
 
   const sizes = {
     mobile: {
-      title:  "clamp(18px, 5.5vw, 24px)",
-      body:   "clamp(14px, 3.8vw, 18px)",
+      title:  "clamp(24px, 7vw, 38px)",
+       body:        "clamp(14px, 3.6vw, 18px)",
       meta:   "clamp(13px, 3.4vw, 16px)",
       logo:   "clamp(96px, 28vw, 160px)",
       gap:    "clamp(10px, 3.5vw, 16px)",
     },
     tablet: {
-      title:  "clamp(20px, 3.6vw, 28px)",
-      body:   "clamp(15px, 2.6vw, 19px)",
+      title:       "clamp(28px, 5.2vw, 48px)",
+      body:        "clamp(15px, 2.2vw, 19px)",
       meta:   "clamp(14px, 2.2vw, 18px)",
       logo:   "clamp(120px, 20vw, 180px)",
       gap:    "clamp(12px, 2.6vw, 18px)",
     },
     laptop: {
-      title:  "clamp(22px, 2.4vw, 32px)",
-      body:   "clamp(16px, 1.4vw, 20px)",
+     title:       "clamp(28px, 3vw, 32px)", 
+      body:        "clamp(16px, 1.2vw, 16px)",
       meta:   "clamp(14px, 1.2vw, 18px)",
-      logo:   "clamp(140px, 16vw, 200px)",
+      logo:   "clamp(180px, 20vw, 260px)",
       gap:    "clamp(12px, 1.6vw, 20px)",
     },
     desktop: {
-      title:  "clamp(24px, 1.8vw, 36px)",
-      body:   "clamp(16px, 1.0vw, 22px)",
+      title:       "clamp(30px, 2.6vw, 40px)",
+      body:        "clamp(16px, 0.9vw, 24px)",
       meta:   "clamp(14px, 0.9vw, 20px)",
-      logo:   "clamp(160px, 12vw, 220px)",
+      logo:   "clamp(220px, 24vw, 290px)",
       gap:    "clamp(12px, 1.2vw, 22px)",
     },
   } as const;
@@ -47,17 +47,17 @@ const About = () => {
   return (
     <div id="about" className="mx-auto container xl:px-20 lg:px-12 sm:px-6 px-4 py-12">
       <div className="flex flex-col items-center justify-center">
-        {/* Logo */}
-        <div>
-          <img
-            src={logo}
-            alt={companyName}
-            style={{ width: s.logo, height: s.logo }}
-            className="object-contain"
-          />
-        </div>
+        
+    <div>
+  <img
+    src={logo}
+    alt={companyName}
+    style={{ width: s.logo, height: s.logo }}
+    className="object-contain translate-y-6 md:translate-y-8"
+  />
+</div>
 
-        {/* Açıklama */}
+        
         <div className="text-center max-w-2xl mt-4 text-gray-800 dark:text-gray-300">
           <h2 className="font-semibold mb-2" style={{ fontSize: s.title }}>
             {sections[0].name}

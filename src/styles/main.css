@@ -29,12 +29,11 @@ a:hover {
   border-bottom: none !important;
   display: inline-block;
   width: fit-content;
-  overflow: hidden; /* ÖNEMLİ! Hover genişlemesini engeller */
+  overflow: hidden; 
 }
 
 .logo-link:hover {
   border-bottom: none !important;
-  /* kesinlikle BURAYA scale koyma! */
 }
 
 .logo-link:hover img {

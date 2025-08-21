@@ -17,11 +17,10 @@ const HowItWorks = () => {
       stepBody:    "clamp(13px, 3.4vw, 16px)",
       icon:        "clamp(56px, 15vw, 80px)",
       padY:        "clamp(16px, 5vw, 28px)",
-      // yeni dinamik boşluklar:
       gridGap:     "clamp(16px, 4vw, 24px)",
       gridTop:     "clamp(20px, 6vw, 36px)",   // grid üstündeki boşluk
-      iconGap:     "clamp(12px, 3.5vw, 18px)", // ikon -> h3 arası
-      stepGap:     "clamp(6px, 2.8vw, 10px)",  // h3 -> p arası
+      iconGap:     "clamp(12px, 3.5vw, 18px)", 
+      stepGap:     "clamp(6px, 2.8vw, 10px)", 
     },
     tablet: {
       title:       "clamp(28px, 5.2vw, 48px)",
@@ -37,7 +36,7 @@ const HowItWorks = () => {
       stepGap:     "clamp(6px, 2vw, 12px)",
     },
     laptop: {
-      title:       "clamp(28px, 3vw, 50px)",   // senin istediğin gibi biraz küçültülmüş
+      title:       "clamp(28px, 3vw, 40px)",   
       sub:         "clamp(20px, 2.4vw, 32px)",
       body:        "clamp(16px, 1.2vw, 20px)",
       stepTitle:   "clamp(17px, 1.4vw, 24px)",
@@ -50,17 +49,18 @@ const HowItWorks = () => {
       stepGap:     "clamp(8px, 1.2vw, 14px)",
     },
     desktop: {
-      title:       "clamp(36px, 3.6vw, 72px)", // yatayda daha yayılıyor
+      title:       "clamp(36px, 3.6vw, 56px)", 
       sub:         "clamp(22px, 1.8vw, 36px)",
-      body:        "clamp(16px, 0.9vw, 22px)",
+      body:        "clamp(16px, 0.9vw, 26px)",
       stepTitle:   "clamp(18px, 1.1vw, 26px)",
       stepBody:    "clamp(14px, 0.9vw, 20px)",
       icon:        "clamp(80px, 5.6vw, 112px)",
       padY:        "clamp(22px, 1.4vw, 40px)",
-      gridGap:     "clamp(28px, 1.8vw, 56px)", // kartlar arası boşluk (row/col)
-      gridTop:     "clamp(28px, 3vw, 52px)",   // grid üstünde
-      iconGap:     "clamp(18px, 1.2vw, 28px)", // ikon -> h3
-      stepGap:     "clamp(8px, 0.9vw, 16px)",  // h3 -> p
+      
+      gridGap:     "clamp(36px, 3.8vw, 96px)", 
+      gridTop:     "clamp(28px, 3vw, 52px)",   
+      iconGap:     "clamp(18px, 1.2vw, 28px)", 
+      stepGap:     "clamp(8px, 0.9vw, 16px)",  
     },
   } as const;
 
@@ -85,7 +85,7 @@ const HowItWorks = () => {
           </p>
         </div>
 
-        {/* grid boşlukları dinamik: class gap kaldırıldı */}
+        
         <div
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 mt-12 max-w-6xl mx-auto px-4"
           style={{
@@ -115,7 +115,7 @@ const HowItWorks = () => {
                 style={{
                   fontSize: s.stepBody,
                   lineHeight: 1.5,
-                  marginTop: s.stepGap, // başlık -> açıklama arası
+                  marginTop: s.stepGap, 
                 }}
               >
                 {step.description}
