@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useEffect,  } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import confetti from "canvas-confetti";
 import { toast } from "react-toastify";
@@ -82,6 +82,9 @@ const Product = ({
   const [loading, setLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
+  // >>> Kaydırma için ref
+  const suggestionsRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     const handler = () => setFavoriModal(true);
     window.addEventListener("show-favori-modal", handler);
@@ -92,6 +95,16 @@ const Product = ({
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsAuthenticated(loggedIn);
   }, []);
+
+  // >>> Öneriler geldikten sonra otomatik kaydır
+  useEffect(() => {
+    if (oneriler && oneriler.length >= 3 && suggestionsRef.current) {
+      const el = suggestionsRef.current;
+      const headerOffset = 80; // sabit header yüksekliğin varsa ayarla
+      const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  }, [oneriler]);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -192,10 +205,10 @@ const Product = ({
       scalar: 0.7,
     });
 
-   toast.success("Ürün favorilere eklendi!", {
-  toastId: "favori-eklendi",
-  position: "top-right",
-});
+    toast.success("Ürün favorilere eklendi!", {
+      toastId: "favori-eklendi",
+      position: "top-right",
+    });
     setAnimatedHeartId(item.baslik);
     setTimeout(() => setAnimatedHeartId(null), 350);
   };
@@ -226,7 +239,7 @@ const Product = ({
       >
         <div className="absolute inset-0 bg-white bg-opacity-70 z-0" />
 
-       <div className="relative z-10 mx-auto px-4" style={{ width: s.formWidth }}>
+        <div className="relative z-10 mx-auto px-4" style={{ width: s.formWidth }}>
           <form
             onSubmit={handleSubmit}
             className="bg-white p-8 rounded-xl shadow-lg space-y-6"
@@ -420,9 +433,12 @@ const Product = ({
         </div>
       </section>
 
-     
       {oneriler?.length >= 3 && (
-        <section className="bg-white py-12" id="pricing">
+        <section
+          ref={suggestionsRef}
+          className="bg-white py-12"
+          id="pricing"
+        >
           <div className="container mx-auto px-4">
             <h1
               className="font-bold text-center text-primary mb-6"
@@ -438,7 +454,6 @@ const Product = ({
                   className={`relative rounded-lg bg-white shadow-md p-6 flex flex-col justify-between ${
                     index === 1 ? "border-2 border-red-500" : ""
                   }`}
-                  
                 >
                   <button
                     className="absolute top-4 right-4 text-gray-400 hover:scale-125 transition-transform"
@@ -467,7 +482,7 @@ const Product = ({
                     </svg>
                   </button>
 
-                  <div  className="mt-4">
+                  <div className="mt-4">
                     <h3
                       className="text-center text-primary mb-4 font-bold"
                       style={{ fontSize: s.sub }}
@@ -491,7 +506,7 @@ const Product = ({
                       }
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-medium hover:underline text-blue-600"
+                      className="font-medium text-red-600 no-underline underline decoration-red-600 decoration-2 hover:text-red-700"
                       style={{ fontSize: s.button }}
                     >
                       Ürünü Gör
@@ -504,7 +519,6 @@ const Product = ({
         </section>
       )}
 
-     
       {favoriModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg w-full max-w-xl relative">
@@ -549,7 +563,7 @@ const Product = ({
                       }
                       target="_blank"
                       rel="noreferrer"
-                      className="text-blue-600 hover:underline"
+                      className="font-medium text-red-600 no-underline underline decoration-red-600 decoration-2 hover:text-red-700"
                       style={{ fontSize: s.button }}
                     >
                       Ürünü Gör
