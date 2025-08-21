@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 
 
 import About from '../components/About';
-import Analytics from '../components/Analytics';
 import Header from '../components/Header';
 import HowItWorks from '../components/HowItWorks'; // Eğer bileşen components/HowItWorks.tsx içindeyse
 import MainHero from '../components/MainHero';
@@ -51,7 +50,7 @@ const App = () => {
         <>
           <About />
         </>
-      <Analytics />
+      
 
 
     </div>

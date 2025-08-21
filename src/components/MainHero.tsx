@@ -7,13 +7,11 @@ import { Link as ScrollLink } from "react-scroll";
 import config from "../config/index.json";
 import { useDeviceType } from "../hooks/useDeviceType";
 
-
 const MainHero = () => {
-  const mainHero = config.mainHero;
+  const { mainHero } = config as any;
   const { deviceType } = useDeviceType();
 
- 
-  const sizes = {
+   const sizes = {
     mobile:  {
       title:   "clamp(24px, 7vw, 38px)",
       sub:     "clamp(16px, 4.5vw, 24px)",
@@ -49,10 +47,14 @@ const MainHero = () => {
   } as const;
 
   const s = sizes[deviceType];
-
   return (
-    <section id="hero" className="w-full min-h-screen flex items-center px-6 snap-start">
-      <div className="sm:text-center lg:text-left">
+    
+<main className="w-full px-6 snap-start
+                 mt-4 sm:mt-8 md:mt-8     
+                 lg:mt-0 lg:min-h-[85vh] lg:flex lg:items-center">
+
+
+      <div className="sm:text-center lg:text-left ">
         <h1 className="tracking-tight font-bold text-gray-900 leading-tight">
           <span className="block" style={{ fontSize: s.title }}>{mainHero.title}</span>
           <span className="block text-primary mt-2" style={{ fontSize: s.sub }}>
@@ -65,20 +67,19 @@ const MainHero = () => {
         </p>
 
         <div className="mt-8 sm:flex sm:justify-center lg:justify-start">
-<ScrollLink
-  to={mainHero.primaryAction.href}  
-  smooth={true}
-  duration={500}
-  offset={-80} 
-  className="bg-gradient-to-r from-red-600 to-red-400 hover:from-red-700 hover:to-red-500 text-white font-semibold rounded-lg transition disabled:opacity-60 cursor-pointer inline-block"
-  style={{ fontSize: s.button, padding: `${s.padY} ${s.padX}` }}
->
-  {mainHero.primaryAction.text}
-</ScrollLink>
-
+          <ScrollLink
+            to={mainHero.primaryAction.href}
+            smooth
+            duration={500}
+            offset={-80}
+            className="bg-gradient-to-r from-red-600 to-red-400 hover:from-red-700 hover:to-red-500 text-white font-semibold rounded-lg transition inline-block cursor-pointer"
+            style={{ fontSize: s.button, padding: `${s.padY} ${s.padX}` }}
+          >
+            {mainHero.primaryAction.text}
+          </ScrollLink>
         </div>
       </div>
-    </section>
+    </main>
   );
 };
 

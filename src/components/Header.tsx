@@ -45,11 +45,12 @@ const Menu = () => {
       </svg>
 
       <Popover>
-        <div className="relative pt-6 px-2 sm:px-4 lg:px-6 lg:ml-[-42px]">
+        <div className="relative pt-6 pl-2 sm:pl-4 lg:pl-6 pr-0 lg:pr-0 xl:pr-0 lg:ml-[-42px]">
           <nav
-            className="relative flex items-center justify-between sm:h-10 lg:justify-start"
+            className="relative flex items-center justify-between sm:h-10 lg:justify-start w-full"
             aria-label="Global"
           >
+            {/* Sol: logo + hamburger */}
             <div className="flex items-center">
               <div className="flex items-center gap-4">
                 <a href="#" className="logo-link">
@@ -67,60 +68,69 @@ const Menu = () => {
               </div>
             </div>
 
-            <div className="hidden md:flex md:items-center md:space-x-3 text-sm lg:text-base flex-nowrap whitespace-nowrap">
-              {navigation.map((item) =>
-                item.href === "favorimodal" ? (
-                  <span
-                    key={item.name}
-                    onClick={handleFavoriClick}
-                    className="cursor-pointer font-medium text-gray-500 hover:text-red-600"
-                  >
-                    {item.name}
-                  </span>
-                ) : (
-                  <Link
-                    spy={true}
-                    active="active"
-                    smooth={true}
-                    duration={1000}
-                    key={item.name}
-                    to={item.href}
-                    className="font-medium text-gray-500 hover:text-gray-900"
-                  >
-                    {item.name}
-                  </Link>
-                )
-              )}
+            {/* Sağ: linkler + aksiyonlar ayrı div'lerde */}
+            <div className="hidden md:flex md:items-center text-sm lg:text-base flex-nowrap whitespace-nowrap">
+              {/* Menü linkleri */}
+              <div className="flex items-center space-x-3">
+                {navigation.map((item) =>
+                  item.href === "favorimodal" ? (
+                    <span
+                      key={item.name}
+                      onClick={handleFavoriClick}
+                      className="cursor-pointer font-medium text-gray-500 hover:text-red-600"
+                    >
+                      {item.name}
+                    </span>
+                  ) : (
+                    <Link
+                      spy={true}
+                      active="active"
+                      smooth={true}
+                      duration={1000}
+                      key={item.name}
+                      to={item.href}
+                      className="font-medium text-gray-500 hover:text-gray-900"
+                    >
+                      {item.name}
+                    </Link>
+                  )
+                )}
+              </div>
 
-              {isLoggedIn ? (
-                <button
-                  onClick={handleLogout}
-                  className="text-sm text-red-600 border border-red-600 px-3 py-1 rounded hover:bg-red-100"
-                >
-                  Çıkış Yap
-                </button>
-              ) : (
-                <>
-                  {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-                  <a
-                    href="/login"
-                    className="text-sm text-white bg-gradient-to-r from-red-600 to-red-400 hover:from-red-700 hover:to-red-500 px-3 py-1 rounded transition disabled:opacity-60"
+              {/* Aksiyon butonları (Giriş/Kayıt/Çıkış) */}
+              <div className="flex items-center space-x-2 pl-8 ml-auto
++                 mr-[-0.5rem] sm:mr-[-1rem] lg:mr-[-2rem] xl:mr-[-3rem]">
+                {isLoggedIn ? (
+                  <button
+                    onClick={handleLogout}
+                    className="text-sm text-red-600 border border-red-600 px-3 py-1 rounded hover:bg-red-100"
                   >
-                    Giriş Yap
-                  </a>
-                  {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-                  <a
-                    href="/register"
-                    className="text-sm text-red-600 border border-red-600 bg-white px-3 py-1 rounded hover:bg-red-50 active:bg-red-100 transition"
-                  >
-                    Kayıt Ol
-                  </a>
-                </>
-              )}
+                    Çıkış Yap
+                  </button>
+                ) : (
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                    <a
+                      href="/login"
+                      className="text-sm text-white bg-gradient-to-r from-red-600 to-red-400 hover:from-red-700 hover:to-red-500 px-3 py-1 rounded transition disabled:opacity-60"
+                    >
+                      Giriş Yap
+                    </a>
+                    {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                    <a
+                      href="/register"
+                      className="text-sm text-red-600 border border-red-600 bg-white px-3 py-1 rounded hover:bg-red-50 active:bg-red-100 transition"
+                    >
+                      Kayıt Ol
+                    </a>
+                  </>
+                )}
+              </div>
             </div>
           </nav>
         </div>
 
+        {/* Mobile Panel */}
         <Transition
           as={Fragment}
           enter="duration-150 ease-out"
@@ -180,13 +190,17 @@ const Menu = () => {
                     Çıkış Yap
                   </button>
                 ) : (
-                  // eslint-disable-next-line @next/next/no-html-link-for-pages
-                  <a
-                    href="/login"
-                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-100"
-                  >
-                    Giriş Yap
-                  </a>
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                    <a
+                      href="/login"
+                      className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-100"
+                    >
+                      Giriş Yap
+                    </a>
+                    {/* istersen burada Kayıt Ol’u da gösterebilirsin */}
+                    {/* <a href="/register" className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-100">Kayıt Ol</a> */}
+                  </>
                 )}
               </div>
             </div>
@@ -197,4 +211,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default Menu;

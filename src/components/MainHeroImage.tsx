@@ -1,23 +1,36 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React from "react";
 
-import config from '../config/index.json';
+import config from "../config/index.json";
 
 const MainHeroImage = () => {
-  const { mainHero } = config;
+  const { mainHero } = config as any;
+
   return (
-    <div
-      className="relative w-full h-72 sm:h-96 md:h-[32rem] lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full overflow-hidden"
-      style={{
-        clipPath: 'polygon(10% 0, 100% 0, 100% 100%, 0% 100%)', 
-      }}
-    >
-      <img
-        className="w-full h-full object-cover"
-        src={mainHero.img}
-        alt="happy team image"
-      />
-    </div>
+    <>
+     
+      <div className="mt-8 px-4 sm:px-6 lg:hidden">
+        <img
+          src={mainHero.img}
+          alt="happy team image"
+          className="block w-full h-auto object-contain rounded-lg"
+          loading="lazy"
+        />
+      </div>
+
+      
+      <div
+        className="hidden lg:block lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 overflow-hidden"
+        style={{ clipPath: "polygon(10% 0, 100% 0, 100% 100%, 0% 100%)" }}
+      >
+        <img
+          src={mainHero.img}
+          alt="happy team image"
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+    </>
   );
 };
 

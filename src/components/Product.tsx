@@ -12,7 +12,7 @@ import LoginRequiredModal from "./LoginRequiredModal";
 import { useDeviceType } from "../hooks/useDeviceType";
 
 const sizes = {
-  mobile: { title:"clamp(24px, 7vw, 38px)", sub:"clamp(16px, 4.5vw, 24px)", body:"clamp(14px, 3.6vw, 18px)", button:"clamp(14px, 3.6vw, 18px)", padY:"clamp(10px, 2.8vw, 14px)", padX:"clamp(18px, 5.5vw, 26px)", formWidth:"clamp(300px, 92vw, 520px)" },
+  mobile: { title:"clamp(24px, 7vw, 38px)", sub:"clamp(16px, 4.5vw, 24px)", body:"clamp(14px, 3.6vw, 18px)", button:"clamp(14px, 3.6vw, 18px)", padY:"clamp(10px, 2.8vw, 14px)", padX:"clamp(18px, 5.5vw, 26px)", formWidth:"clamp(300px, 92vw, 420px)" },
   tablet: { title:"clamp(28px, 5.2vw, 42px)", sub:"clamp(18px, 3.2vw, 26px)", body:"clamp(15px, 2.2vw, 18px)", button:"clamp(15px, 2.2vw, 18px)", padY:"clamp(10px, 1.8vw, 14px)", padX:"clamp(20px, 3.4vw, 28px)", formWidth:"clamp(360px, 78vw, 620px)" },
   laptop: { title:"clamp(26px, 2.6vw, 38px)", sub:"clamp(17px, 1.8vw, 24px)", body:"clamp(14px, 1.1vw, 17px)", button:"clamp(14px, 1.1vw, 17px)", padY:"clamp(8px, 0.9vw, 12px)", padX:"clamp(16px, 1.2vw, 22px)", formWidth:"clamp(420px, 56vw, 680px)" },
   desktop: { title:"clamp(36px, 3vw, 56px)", sub:"clamp(22px, 1.8vw, 30px)", body:"clamp(16px, 0.9vw, 36px)", button:"clamp(16px, 1vw, 20px)", padY:"clamp(12px, 0.8vw, 18px)", padX:"clamp(20px, 1.2vw, 40px)", formWidth:"clamp(480px, 44vw, 820px)" },
