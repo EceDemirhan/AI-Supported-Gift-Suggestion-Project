@@ -18,17 +18,10 @@ const sizes = {
   desktop: { title:"clamp(36px, 3vw, 56px)", sub:"clamp(22px, 1.8vw, 30px)", body:"clamp(16px, 0.9vw, 36px)", button:"clamp(16px, 1vw, 20px)", padY:"clamp(12px, 0.8vw, 18px)", padX:"clamp(20px, 1.2vw, 40px)", formWidth:"clamp(480px, 44vw, 820px)" },
 } as const;
 
-/* ---------- Seçenekler ---------- */
+
+
 const RELATION_OPTIONS = [
-  "Anne",
-  "Baba",
-  "Kardeş",
-  "Sevgili",
-  "Arkadaş",
-  "İş Arkadaşı",
-  "Öğretmen",
-  "Eş",
-  "Çocuk",
+  "Anne","Baba","Kardeş","Sevgili","Arkadaş","İş Arkadaşı","Öğretmen","Eş","Çocuk",
 ] as const;
 
 type Relation = (typeof RELATION_OPTIONS)[number];
@@ -38,38 +31,21 @@ const GENDERS = ["Kadın", "Erkek", "Belirtmek İstemiyor"] as const;
 const genderOptionsForRelation = (r: Relation | ""): readonly string[] => {
   if (r === "Anne") return ["Kadın", "Belirtmek İstemiyor"] as const;
   if (r === "Baba") return ["Erkek", "Belirtmek İstemiyor"] as const;
-  return GENDERS; // diğer tüm ilişkilerde hepsi açık
+  return GENDERS; // diğer tüm ilişkilerde hepsi açık (senin kuralına göre)
 };
 
 const OCCASION_OPTIONS = [
-  "Doğum Günü",
-  "Evlilik Yıldönümü",
-  "Sevgililer Günü",
-  "Yılbaşı",
-  "Anneler Günü",
-  "Babalar Günü",
-  "Mezuniyet",
-  "Yeni İş/Terfi",
-  "Yeni Ev",
-  "Nişan/Düğün",
-  "Geçmiş Olsun",
-  "Teşekkür",
-  "Sınav Başarısı",
-  "Diğer",
+  "Doğum Günü","Evlilik Yıldönümü","Sevgililer Günü","Yılbaşı","Anneler Günü","Babalar Günü",
+  "Mezuniyet","Yeni İş/Terfi","Yeni Ev","Nişan/Düğün","Geçmiş Olsun","Teşekkür","Sınav Başarısı","Diğer",
 ];
 
 const KATEGORI_SECENEKLERI = [
-  "Kıyafet",
-  "Ayakkabı",
-  "Aksesuar",
-  "Elektronik",
-  "Ev Eşyası",
-  "Kitap",
-  "Kozmetik",
-  "Oyun/Hobi",
-  "Spor/Outdoor",
-  "Mutfak",
+  "Kıyafet","Ayakkabı","Aksesuar","Elektronik","Ev Eşyası","Kitap","Kozmetik","Oyun/Hobi","Spor/Outdoor","Mutfak",
 ];
+
+
+const FREE_TRY_KEY = "hediye_free_try_used";
+const LOGIN_KEY = "isLoggedIn";
 
 const Product = ({
   favoriModal,
@@ -94,7 +70,6 @@ const Product = ({
     sevdigi: "",
     hobiler: "",
     kategoriler: [] as string[],
-   
   });
 
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -102,6 +77,9 @@ const Product = ({
   const [oneriler, setOneriler] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+
+  const [freeTryUsed, setFreeTryUsed] = useState<boolean>(false);
 
   // Auto-scroll
   const suggestionsRef = useRef<HTMLDivElement | null>(null);
@@ -120,23 +98,22 @@ const Product = ({
   }, [setFavoriModal]);
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const loggedIn = localStorage.getItem(LOGIN_KEY) === "true";
     setIsAuthenticated(loggedIn);
+    setFreeTryUsed(localStorage.getItem(FREE_TRY_KEY) === "true");
   }, []);
 
-const currentGenderOptions = genderOptionsForRelation(form.kime);
+  const currentGenderOptions = genderOptionsForRelation(form.kime);
 
-useEffect(() => {
-  if (form.cinsiyet && !currentGenderOptions.includes(form.cinsiyet as any)) {
-    setForm((p) => ({ ...p, cinsiyet: "" })); 
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [form.kime]);
+  useEffect(() => {
+    if (form.cinsiyet && !currentGenderOptions.includes(form.cinsiyet as any)) {
+      setForm((p) => ({ ...p, cinsiyet: "" }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.kime]);
 
   const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -155,22 +132,42 @@ useEffect(() => {
     e.preventDefault();
 
     if (isAuthenticated === null) return;
+
+
     if (!isAuthenticated) {
+      if (!freeTryUsed) {
+        setLoading(true);
+        try {
+          const cevaplar = await getGiftSuggestions(form);
+          setOneriler(cevaplar || []);
+          setFreeTryUsed(true);
+          localStorage.setItem(FREE_TRY_KEY, "true");
+          toast.info("Bu önerileri sizin için hazırladık. Favorilemek ve devam etmek için lütfen giriş yapınız.");
+        } catch (error) {
+          console.error("FREE TRY HATASI:", error);
+          alert("Bir hata oluştu. Konsolu kontrol edin.");
+        } finally {
+          setLoading(false);
+        }
+        return;
+      }
+     
       setShowLoginModal(true);
       return;
     }
 
+    
     setLoading(true);
     try {
       const formResponse = await fetch("/api/formEkle", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          kullanici_id: 1, // TODO: login’den al
+          kullanici_id: 1,
           kime_hediye: form.kime,
           neden_hediye: form.neden,
           yas: Number(form.yas || 0),
-          cinsiyet: form.cinsiyet, // Anne/Baba için seçilebilir; diğerlerinde boş kalır
+          cinsiyet: form.cinsiyet,
           burc: form.burc,
           sevdigi_medya: form.sevdigi,
           hobiler: form.hobiler,
@@ -203,6 +200,13 @@ useEffect(() => {
   };
 
   const toggleFavori = async (item: any) => {
+    
+    if (!isAuthenticated) {
+      setShowLoginModal(true);
+      toast.info("Favorilere eklemek için önce giriş yapınız.");
+      return;
+    }
+
     const zatenEkli = favoriler.find((f) => f.baslik === item.baslik);
     if (zatenEkli) {
       setFavoriler(favoriler.filter((f) => f.baslik !== item.baslik));
@@ -243,7 +247,7 @@ useEffect(() => {
 
   return (
     <>
-      {/* FORM */}
+     
       <section
         id="product"
         className="relative min-h-screen flex items-center justify-center"
@@ -270,7 +274,7 @@ useEffect(() => {
               Hediye Öneri Formu
             </h2>
 
-            {/* Kime & Neden */}
+          
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
@@ -315,7 +319,7 @@ useEffect(() => {
               </div>
             </div>
 
-            {/* Yaş - (Cinsiyet koşullu) - Burç */}
+           
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
@@ -331,30 +335,27 @@ useEffect(() => {
                 />
               </div>
 
-              {/* Cinsiyet sadece Anne/Baba için gösterilir */}
-              {currentGenderOptions !== null && (
-                <div>
-                  <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
-                    Cinsiyet *
-                  </label>
-                  <select
-                    name="cinsiyet"
-                    value={form.cinsiyet}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full border rounded px-3 py-2 mt-1 text-gray-900"
-                    style={{ fontSize: s.body }}
-                  >
-                    <option value="">Seçiniz</option>
-                    {currentGenderOptions.map((g) => (
-                      <option key={g} value={g}>
-                        {g}
-                      </option>
-                    ))}
-                  </select>
-                  
-                </div>
-              )}
+              
+              <div>
+                <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
+                  Cinsiyet *
+                </label>
+                <select
+                  name="cinsiyet"
+                  value={form.cinsiyet}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full border rounded px-3 py-2 mt-1 text-gray-900"
+                  style={{ fontSize: s.body }}
+                >
+                  <option value="">Seçiniz</option>
+                  {currentGenderOptions.map((g) => (
+                    <option key={g} value={g}>
+                      {g}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
               <div>
                 <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
@@ -371,7 +372,7 @@ useEffect(() => {
               </div>
             </div>
 
-            {/* Sevdiği & Hobi */}
+            
             <div className="grid grid-cols-1 md-grid-cols-2 md:grid-cols-2 gap-4">
               <div>
                 <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
@@ -400,12 +401,8 @@ useEffect(() => {
               </div>
             </div>
 
-            {/* Kategori Tercihleri */}
             <div>
-              <label
-                className="block font-medium text-gray-900 mb-2"
-                style={{ fontSize: s.body }}
-              >
+              <label className="block font-medium text-gray-900 mb-2" style={{ fontSize: s.body }}>
                 Kategori Tercihleri *
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-gray-50 border rounded px-4 py-4">
@@ -428,7 +425,6 @@ useEffect(() => {
               </div>
             </div>
 
-
             <div className="text-center">
               <button
                 type="submit"
@@ -443,7 +439,7 @@ useEffect(() => {
         </div>
       </section>
 
-      {/* ÖNERİLER */}
+
       {oneriler?.length >= 3 && (
         <section ref={suggestionsRef} className="bg-white py-12" id="pricing">
           <div className="container mx-auto px-4">
@@ -496,16 +492,12 @@ useEffect(() => {
                     >
                       {item.baslik || "Başlık yok"}
                     </h3>
-                    <p
-                      className="text-gray-700 text-center"
-                      style={{ fontSize: s.body }}
-                    >
+                    <p className="text-gray-700 text-center" style={{ fontSize: s.body }}>
                       {item.aciklama || "Açıklama yok"}
                     </p>
                   </div>
 
                   <div className="mt-4 text-center">
-                    {/* a yerine button: underline problemi yok */}
                     <button
                       onClick={() =>
                         window.open(
@@ -530,7 +522,7 @@ useEffect(() => {
         </section>
       )}
 
-      {/* Favoriler Modal */}
+
       {favoriModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg w-full max-w-xl relative">
@@ -543,27 +535,18 @@ useEffect(() => {
               ✖
             </button>
 
-            <h2
-              className="font-bold mb-4 text-center text-primary"
-              style={{ fontSize: s.sub }}
-            >
+            <h2 className="font-bold mb-4 text-center text-primary" style={{ fontSize: s.sub }}>
               Favori Ürünler
             </h2>
 
             <ul className="space-y-2 max-h-[400px] overflow-y-auto">
               {favoriler.length === 0 ? (
-                <p
-                  className="text-center text-gray-600"
-                  style={{ fontSize: s.body }}
-                >
+                <p className="text-center text-gray-600" style={{ fontSize: s.body }}>
                   Henüz favori eklenmedi.
                 </p>
               ) : (
                 favoriler.map((item, i) => (
-                  <li
-                    key={i}
-                    className="border-b py-2 flex justify-between items-center"
-                  >
+                  <li key={i} className="border-b py-2 flex justify-between items-center">
                     <span className="font-medium" style={{ fontSize: s.body }}>
                       {item.baslik}
                     </span>
