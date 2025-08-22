@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import About from '../components/About';
 import Header from '../components/Header';
-import HowItWorks from '../components/HowItWorks'; // Eğer bileşen components/HowItWorks.tsx içindeyse
+import HowItWorks from '../components/HowItWorks'; 
 import MainHero from '../components/MainHero';
 import MainHeroImage from '../components/MainHeroImage';
 import Product from '../components/Product';

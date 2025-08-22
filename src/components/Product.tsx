@@ -5,8 +5,6 @@ import React, { useState, useEffect, useRef } from "react";
 import confetti from "canvas-confetti";
 import { toast } from "react-toastify";
 
-import { getGiftSuggestions } from "../lib/gemini";
-
 import "react-toastify/dist/ReactToastify.css";
 import LoginRequiredModal from "./LoginRequiredModal";
 import { useDeviceType } from "../hooks/useDeviceType";
@@ -17,8 +15,6 @@ const sizes = {
   laptop: { title:"clamp(26px, 2.6vw, 38px)", sub:"clamp(17px, 1.8vw, 24px)", body:"clamp(14px, 1.1vw, 17px)", button:"clamp(14px, 1.1vw, 17px)", padY:"clamp(8px, 0.9vw, 12px)", padX:"clamp(16px, 1.2vw, 22px)", formWidth:"clamp(420px, 56vw, 680px)" },
   desktop: { title:"clamp(36px, 3vw, 56px)", sub:"clamp(22px, 1.8vw, 30px)", body:"clamp(16px, 0.9vw, 36px)", button:"clamp(16px, 1vw, 20px)", padY:"clamp(12px, 0.8vw, 18px)", padX:"clamp(20px, 1.2vw, 40px)", formWidth:"clamp(480px, 44vw, 820px)" },
 } as const;
-
-
 
 const RELATION_OPTIONS = [
   "Anne","Baba","Kardeş","Sevgili","Arkadaş","İş Arkadaşı","Öğretmen","Eş","Çocuk",
@@ -31,7 +27,7 @@ const GENDERS = ["Kadın", "Erkek", "Belirtmek İstemiyor"] as const;
 const genderOptionsForRelation = (r: Relation | ""): readonly string[] => {
   if (r === "Anne") return ["Kadın", "Belirtmek İstemiyor"] as const;
   if (r === "Baba") return ["Erkek", "Belirtmek İstemiyor"] as const;
-  return GENDERS; // diğer tüm ilişkilerde hepsi açık (senin kuralına göre)
+  return GENDERS;
 };
 
 const OCCASION_OPTIONS = [
@@ -43,9 +39,22 @@ const KATEGORI_SECENEKLERI = [
   "Kıyafet","Ayakkabı","Aksesuar","Elektronik","Ev Eşyası","Kitap","Kozmetik","Oyun/Hobi","Spor/Outdoor","Mutfak",
 ];
 
-
 const FREE_TRY_KEY = "hediye_free_try_used";
 const LOGIN_KEY = "isLoggedIn";
+
+
+async function fetchGiftSuggestions(form: any) {
+  const resp = await fetch("/api/giftSuggestions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(form),
+  });
+  const js = await resp.json();
+  if (!resp.ok || !js.ok) {
+    throw new Error(js?.error || "AI error");
+  }
+  return js.data as any[];
+}
 
 const Product = ({
   favoriModal,
@@ -77,8 +86,6 @@ const Product = ({
   const [oneriler, setOneriler] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-
-
   const [freeTryUsed, setFreeTryUsed] = useState<boolean>(false);
 
   // Auto-scroll
@@ -133,12 +140,11 @@ const Product = ({
 
     if (isAuthenticated === null) return;
 
-
     if (!isAuthenticated) {
       if (!freeTryUsed) {
         setLoading(true);
         try {
-          const cevaplar = await getGiftSuggestions(form);
+          const cevaplar = await fetchGiftSuggestions(form); // DEĞİŞTİ
           setOneriler(cevaplar || []);
           setFreeTryUsed(true);
           localStorage.setItem(FREE_TRY_KEY, "true");
@@ -151,12 +157,11 @@ const Product = ({
         }
         return;
       }
-     
+
       setShowLoginModal(true);
       return;
     }
 
-    
     setLoading(true);
     try {
       const formResponse = await fetch("/api/formEkle", {
@@ -178,7 +183,7 @@ const Product = ({
       const formData = await formResponse.json();
       const requestId = formData.id;
 
-      const cevaplar = await getGiftSuggestions(form);
+      const cevaplar = await fetchGiftSuggestions(form); // DEĞİŞTİ
 
       const oneriResponse = await fetch("/api/oneriEkle", {
         method: "POST",
@@ -200,7 +205,6 @@ const Product = ({
   };
 
   const toggleFavori = async (item: any) => {
-    
     if (!isAuthenticated) {
       setShowLoginModal(true);
       toast.info("Favorilere eklemek için önce giriş yapınız.");
@@ -244,10 +248,8 @@ const Product = ({
     setTimeout(() => setAnimatedHeartId(null), 350);
   };
 
-
   return (
     <>
-     
       <section
         id="product"
         className="relative min-h-screen flex items-center justify-center"
@@ -274,7 +276,6 @@ const Product = ({
               Hediye Öneri Formu
             </h2>
 
-          
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
@@ -319,7 +320,6 @@ const Product = ({
               </div>
             </div>
 
-           
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
@@ -335,7 +335,6 @@ const Product = ({
                 />
               </div>
 
-              
               <div>
                 <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
                   Cinsiyet *
@@ -372,7 +371,6 @@ const Product = ({
               </div>
             </div>
 
-            
             <div className="grid grid-cols-1 md-grid-cols-2 md:grid-cols-2 gap-4">
               <div>
                 <label className="block font-medium text-gray-900" style={{ fontSize: s.body }}>
@@ -438,7 +436,6 @@ const Product = ({
           </form>
         </div>
       </section>
-
 
       {oneriler?.length >= 3 && (
         <section ref={suggestionsRef} className="bg-white py-12" id="pricing">
@@ -521,7 +518,6 @@ const Product = ({
           </div>
         </section>
       )}
-
 
       {favoriModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

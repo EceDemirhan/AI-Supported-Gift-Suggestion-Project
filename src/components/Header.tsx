@@ -50,7 +50,7 @@ const Menu = () => {
             className="relative flex items-center justify-between sm:h-10 lg:justify-start w-full"
             aria-label="Global"
           >
-            {/* Sol: logo + hamburger */}
+            
             <div className="flex items-center">
               <div className="flex items-center gap-4">
                 <a href="#" className="logo-link">
@@ -58,19 +58,19 @@ const Menu = () => {
                   <img alt="logo" className="h-40 w-auto sm:h-36 lg:h-48" src={logo} />
                 </a>
 
-                {/* Mobile menu button */}
-                <div className="-mr-2 flex items-center md:hidden">
-                  <Popover.Button className="bg-background rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary">
-                    <span className="sr-only">Open main menu</span>
-                    <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-                  </Popover.Button>
-                </div>
+              
+ <div className="md:hidden absolute right-3 top-12">
+  <Popover.Button className="bg-background rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary">
+    <span className="sr-only">Open main menu</span>
+    <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+  </Popover.Button>
+</div>
               </div>
             </div>
 
-            {/* Sağ: linkler + aksiyonlar ayrı div'lerde */}
+           
             <div className="hidden md:flex md:items-center text-sm lg:text-base flex-nowrap whitespace-nowrap">
-              {/* Menü linkleri */}
+            
               <div className="flex items-center space-x-3">
                 {navigation.map((item) =>
                   item.href === "favorimodal" ? (
@@ -89,7 +89,7 @@ const Menu = () => {
                       duration={1000}
                       key={item.name}
                       to={item.href}
-                      className="font-medium text-gray-500 hover:text-gray-900"
+                      className="cursor-pointer font-medium text-gray-500 hover:text-red-600 border-b-0 hover:!border-b-0"
                     >
                       {item.name}
                     </Link>
@@ -97,7 +97,6 @@ const Menu = () => {
                 )}
               </div>
 
-              {/* Aksiyon butonları (Giriş/Kayıt/Çıkış) */}
               <div className="flex items-center space-x-2 pl-8 ml-auto
 +                 mr-[-0.5rem] sm:mr-[-1rem] lg:mr-[-2rem] xl:mr-[-3rem]">
                 {isLoggedIn ? (
@@ -198,7 +197,7 @@ const Menu = () => {
                     >
                       Giriş Yap
                     </a>
-                    {/* istersen burada Kayıt Ol’u da gösterebilirsin */}
+                    
                     {/* <a href="/register" className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-100">Kayıt Ol</a> */}
                   </>
                 )}
