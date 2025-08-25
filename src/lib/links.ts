@@ -86,11 +86,7 @@ export function buildSearchFallbacks(title?: string | null): string[] {
   ];
 }
 
-/**
- * Çalışmayan link gelirse:
- * 1) onar -> doğrula
- * 2) olmazsa arama linklerini sırayla dene (ilk çalışanı ver)
- */
+
 export async function ensureWorkingLink(
   wantedUrl?: string | null,
   titleForSearch?: string | null

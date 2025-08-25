@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 /* eslint-disable prettier/prettier */
 import React, { Fragment, useEffect, useState } from "react";
 
@@ -198,7 +199,7 @@ const Menu = () => {
                       Giriş Yap
                     </a>
                     
-                    {/* <a href="/register" className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-100">Kayıt Ol</a> */}
+                     <a href="/register" className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-100">Kayıt Ol</a> 
                   </>
                 )}
               </div>
