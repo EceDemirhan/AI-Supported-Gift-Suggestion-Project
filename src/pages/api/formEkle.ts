@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import pool from '../../lib/lib/db'; 
+import pool from '../../lib/lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
@@ -16,10 +16,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // eslint-disable-next-line @typescript-eslint/naming-convention
       sevdigi_medya,
       hobiler,
-      kategori_tercihleri
-      
+      kategori_tercihleri,
     } = req.body;
-console.log("formEkle gelen veri:", req.body)
+    console.log('formEkle gelen veri:', req.body);
     try {
       const result = await pool.query(
         `INSERT INTO gift_requests 
@@ -39,7 +38,7 @@ console.log("formEkle gelen veri:", req.body)
         ]
       );
 
-     res.status(200).json(result.rows[0])
+      res.status(200).json(result.rows[0]);
     } catch (error) {
       console.error('Veritabanı ekleme hatası:', error);
       res.status(500).json({ error: 'Kayıt sırasında hata oluştu' });

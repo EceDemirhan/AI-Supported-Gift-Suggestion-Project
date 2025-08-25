@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import nodemailer from "nodemailer";
+import nodemailer from 'nodemailer';
 
 let transporter: nodemailer.Transporter | null = null;
 
@@ -29,7 +29,7 @@ export async function sendVerificationEmail(to: string, link: string) {
       <p><a href="${link}">${link}</a></p>
     </div>
   `;
-  await t.sendMail({ from, to, subject: "E-posta Doğrulama", html });
+  await t.sendMail({ from, to, subject: 'E-posta Doğrulama', html });
 }
 
 export async function sendResetEmail(to: string, link: string) {
@@ -43,5 +43,5 @@ export async function sendResetEmail(to: string, link: string) {
       <p style="color:#666;font-size:12px">Bağlantı 1 saat geçerlidir.</p>
     </div>
   `;
-  await t.sendMail({ from, to, subject: "Şifre Sıfırlama", html });
+  await t.sendMail({ from, to, subject: 'Şifre Sıfırlama', html });
 }

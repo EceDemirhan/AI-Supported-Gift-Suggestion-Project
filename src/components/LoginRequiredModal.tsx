@@ -15,10 +15,7 @@ const LoginRequiredModal: React.FC<LoginRequiredModalProps> = ({ show, onClose }
         <h2 className="text-lg font-bold mb-4 text-center">Giriş Yapmanız Gerekiyor</h2>
         <p className="mb-4 text-center">Hediye önerisi alabilmek için lütfen giriş yapın.</p>
         <div className="flex justify-center space-x-4">
-          <button
-            className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
-            onClick={onClose}
-          >
+          <button className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400" onClick={onClose}>
             Vazgeç
           </button>
           <button

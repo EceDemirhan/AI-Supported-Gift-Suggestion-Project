@@ -1,4 +1,3 @@
-
 ### Description
 
 **Hediyem Ne Olsa?** is an AI-powered gift suggestion web app built with React, Next.js, and Tailwind CSS.  
@@ -38,7 +37,8 @@ npm run dev
 Then open http://localhost:3000 in your browser.
 
 ```
- ### Technologies Used
+
+### Technologies Used
 
 -React.js
 
@@ -54,11 +54,12 @@ Then open http://localhost:3000 in your browser.
 
 -Confetti.js
 
-
 #### License
+
 Licensed under the MIT License.
 Originally based on: issaafalkattan/react-landing-page-template-2021
 
 #### Project by
+
 Developed with care by Ece Demirhan
 Let your gifts stand out — let AI help you find the perfect one! 🎁

@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 /* eslint-disable prettier/prettier */
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from 'react';
 
-import { Popover, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-scroll";
+import { Popover, Transition } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Link } from 'react-scroll';
 
-import config from "../config/index.json";
+import config from '../config/index.json';
 
 const Menu = () => {
   const { navigation, company } = config;
@@ -15,21 +15,21 @@ const Menu = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const loginStatus = localStorage.getItem("isLoggedIn") === "true";
+    const loginStatus = localStorage.getItem('isLoggedIn') === 'true';
     setIsLoggedIn(loginStatus);
   }, []);
 
   const handleFavoriClick = () => {
     if (isLoggedIn) {
-      window.dispatchEvent(new CustomEvent("show-favori-modal"));
+      window.dispatchEvent(new CustomEvent('show-favori-modal'));
     } else {
-      window.dispatchEvent(new CustomEvent("show-login-modal"));
+      window.dispatchEvent(new CustomEvent('show-login-modal'));
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("userEmail");
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userEmail');
     window.location.reload();
   };
 
@@ -51,7 +51,6 @@ const Menu = () => {
             className="relative flex items-center justify-between sm:h-10 lg:justify-start w-full"
             aria-label="Global"
           >
-            
             <div className="flex items-center">
               <div className="flex items-center gap-4">
                 <a href="#" className="logo-link">
@@ -59,22 +58,19 @@ const Menu = () => {
                   <img alt="logo" className="h-40 w-auto sm:h-36 lg:h-48" src={logo} />
                 </a>
 
-              
- <div className="md:hidden absolute right-3 top-12">
-  <Popover.Button className="bg-background rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary">
-    <span className="sr-only">Open main menu</span>
-    <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-  </Popover.Button>
-</div>
+                <div className="md:hidden absolute right-3 top-12">
+                  <Popover.Button className="bg-background rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary">
+                    <span className="sr-only">Open main menu</span>
+                    <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+                  </Popover.Button>
+                </div>
               </div>
             </div>
 
-           
             <div className="hidden md:flex md:items-center text-sm lg:text-base flex-nowrap whitespace-nowrap">
-            
               <div className="flex items-center space-x-3">
                 {navigation.map((item) =>
-                  item.href === "favorimodal" ? (
+                  item.href === 'favorimodal' ? (
                     <span
                       key={item.name}
                       onClick={handleFavoriClick}
@@ -98,8 +94,10 @@ const Menu = () => {
                 )}
               </div>
 
-              <div className="flex items-center space-x-2 pl-8 ml-auto
-+                 mr-[-0.5rem] sm:mr-[-1rem] lg:mr-[-2rem] xl:mr-[-3rem]">
+              <div
+                className="flex items-center space-x-2 pl-8 ml-auto
++                 mr-[-0.5rem] sm:mr-[-1rem] lg:mr-[-2rem] xl:mr-[-3rem]"
+              >
                 {isLoggedIn ? (
                   <button
                     onClick={handleLogout}
@@ -159,7 +157,7 @@ const Menu = () => {
 
               <div className="px-2 pt-2 pb-3 space-y-1">
                 {navigation.map((item) =>
-                  item.href === "favorimodal" ? (
+                  item.href === 'favorimodal' ? (
                     <span
                       key={item.name}
                       onClick={handleFavoriClick}
@@ -198,8 +196,13 @@ const Menu = () => {
                     >
                       Giriş Yap
                     </a>
-                    
-                     <a href="/register" className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-100">Kayıt Ol</a> 
+
+                    <a
+                      href="/register"
+                      className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-100"
+                    >
+                      Kayıt Ol
+                    </a>
                   </>
                 )}
               </div>
@@ -211,4 +214,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default Menu;

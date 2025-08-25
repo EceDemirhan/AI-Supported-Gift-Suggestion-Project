@@ -1,10 +1,12 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable prettier/prettier */
 // src/lib/links.ts
 
 // --- Helpers ---------------------------------------------------------------
 
 function toSafeString(v?: string | null): string {
-  return (v ?? "").toString().trim();
+  return (v ?? '').toString().trim();
 }
 
 function repairUrl(raw?: string | null): string | null {
@@ -13,19 +15,17 @@ function repairUrl(raw?: string | null): string | null {
 
   let u = input;
 
+  if (!/^https?:\/\//i.test(u)) u = `https://${u.replace(/^\/+/, '')}`;
 
-  if (!/^https?:\/\//i.test(u)) u = `https://${  u.replace(/^\/+/, "")}`;
-
-  u = u.replace(/^https?:\/\/https?:\/\//i, (m) => m.replace(/https?:\/\//i, ""));
+  u = u.replace(/^https?:\/\/https?:\/\//i, (m) => m.replace(/https?:\/\//i, ''));
 
   try {
     const url = new URL(u);
 
-    if (!["http:", "https:"].includes(url.protocol)) return null;
+    if (!['http:', 'https:'].includes(url.protocol)) return null;
 
-
-    if (url.protocol === "http:") {
-      url.protocol = "https:";
+    if (url.protocol === 'http:') {
+      url.protocol = 'https:';
     }
 
     return url.toString();
@@ -40,8 +40,8 @@ export async function urlExists(url: string, timeoutMs = 4000): Promise<boolean>
 
   try {
     const head = await fetch(url, {
-      method: "HEAD",
-      redirect: "follow",
+      method: 'HEAD',
+      redirect: 'follow',
       signal: ac.signal,
     });
     clearTimeout(t);
@@ -55,9 +55,9 @@ export async function urlExists(url: string, timeoutMs = 4000): Promise<boolean>
 
   try {
     const get = await fetch(url, {
-      method: "GET",
-      headers: { Range: "bytes=0-0" }, 
-      redirect: "follow",
+      method: 'GET',
+      headers: { Range: 'bytes=0-0' },
+      redirect: 'follow',
       signal: ac2.signal,
     });
     clearTimeout(t2);
@@ -69,11 +69,11 @@ export async function urlExists(url: string, timeoutMs = 4000): Promise<boolean>
 }
 
 function encodeQ(q?: string | null) {
-  return encodeURIComponent(toSafeString(q).replace(/\s+/g, " "));
+  return encodeURIComponent(toSafeString(q).replace(/\s+/g, ' '));
 }
 
 export function buildSearchFallbacks(title?: string | null): string[] {
-  const q = encodeQ(title || "");
+  const q = encodeQ(title || '');
   return [
     `https://www.amazon.com.tr/s?k=${q}`,
     `https://www.trendyol.com/sr?q=${q}`,
@@ -85,7 +85,6 @@ export function buildSearchFallbacks(title?: string | null): string[] {
     `https://www.google.com/search?q=${q}`,
   ];
 }
-
 
 export async function ensureWorkingLink(
   wantedUrl?: string | null,
@@ -100,5 +99,5 @@ export async function ensureWorkingLink(
     if (await urlExists(c)) return c;
   }
   // Teoride hiçbiri patlamaz; yine de ilkini ver
-  return candidates[0] ?? "";
+  return candidates[0] ?? '';
 }

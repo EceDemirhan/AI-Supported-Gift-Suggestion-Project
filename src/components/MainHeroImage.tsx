@@ -1,14 +1,13 @@
 /* eslint-disable prettier/prettier */
-import React from "react";
+import React from 'react';
 
-import config from "../config/index.json";
+import config from '../config/index.json';
 
 const MainHeroImage = () => {
   const { mainHero } = config as any;
 
   return (
     <>
-     
       <div className="mt-8 px-4 sm:px-6 lg:hidden">
         <img
           src={mainHero.img}
@@ -18,10 +17,9 @@ const MainHeroImage = () => {
         />
       </div>
 
-      
       <div
         className="hidden lg:block lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 overflow-hidden"
-        style={{ clipPath: "polygon(10% 0, 100% 0, 100% 100%, 0% 100%)" }}
+        style={{ clipPath: 'polygon(10% 0, 100% 0, 100% 100%, 0% 100%)' }}
       >
         <img
           src={mainHero.img}

@@ -1,57 +1,117 @@
 /* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 
-import confetti from "canvas-confetti";
-import { toast } from "react-toastify";
+import confetti from 'canvas-confetti';
+import { toast } from 'react-toastify';
 
-import "react-toastify/dist/ReactToastify.css";
-import LoginRequiredModal from "./LoginRequiredModal";
-import { useDeviceType } from "../hooks/useDeviceType";
+import 'react-toastify/dist/ReactToastify.css';
+import LoginRequiredModal from './LoginRequiredModal';
+import { useDeviceType } from '../hooks/useDeviceType';
 
 const sizes = {
-  mobile: { title:"clamp(24px, 7vw, 38px)", sub:"clamp(16px, 4.5vw, 24px)", body:"clamp(14px, 3.6vw, 16px)", button:"clamp(14px, 3.6vw, 16px)", padY:"clamp(10px, 2.8vw, 14px)", padX:"clamp(18px, 5.5vw, 26px)", formWidth:"clamp(300px, 92vw, 420px)" },
-  tablet: { title:"clamp(28px, 5.2vw, 42px)", sub:"clamp(18px, 3.2vw, 26px)", body:"clamp(15px, 2.2vw, 18px)", button:"clamp(15px, 2.2vw, 18px)", padY:"clamp(10px, 1.8vw, 14px)", padX:"clamp(20px, 3.4vw, 28px)", formWidth:"clamp(360px, 78vw, 620px)" },
-  laptop: { title:"clamp(26px, 2.6vw, 38px)", sub:"clamp(17px, 1.8vw, 24px)", body:"clamp(14px, 1.1vw, 17px)", button:"clamp(14px, 1.1vw, 17px)", padY:"clamp(8px, 0.9vw, 12px)", padX:"clamp(16px, 1.2vw, 22px)", formWidth:"clamp(420px, 56vw, 680px)" },
-  desktop: { title:"clamp(36px, 3vw, 56px)", sub:"clamp(22px, 1.8vw, 30px)", body:"clamp(16px, 0.9vw, 36px)", button:"clamp(16px, 1vw, 20px)", padY:"clamp(12px, 0.8vw, 18px)", padX:"clamp(20px, 1.2vw, 40px)", formWidth:"clamp(480px, 44vw, 820px)" },
+  mobile: {
+    title: 'clamp(24px, 7vw, 38px)',
+    sub: 'clamp(16px, 4.5vw, 24px)',
+    body: 'clamp(14px, 3.6vw, 16px)',
+    button: 'clamp(14px, 3.6vw, 16px)',
+    padY: 'clamp(10px, 2.8vw, 14px)',
+    padX: 'clamp(18px, 5.5vw, 26px)',
+    formWidth: 'clamp(300px, 92vw, 420px)',
+  },
+  tablet: {
+    title: 'clamp(28px, 5.2vw, 42px)',
+    sub: 'clamp(18px, 3.2vw, 26px)',
+    body: 'clamp(15px, 2.2vw, 18px)',
+    button: 'clamp(15px, 2.2vw, 18px)',
+    padY: 'clamp(10px, 1.8vw, 14px)',
+    padX: 'clamp(20px, 3.4vw, 28px)',
+    formWidth: 'clamp(360px, 78vw, 620px)',
+  },
+  laptop: {
+    title: 'clamp(26px, 2.6vw, 38px)',
+    sub: 'clamp(17px, 1.8vw, 24px)',
+    body: 'clamp(14px, 1.1vw, 17px)',
+    button: 'clamp(14px, 1.1vw, 17px)',
+    padY: 'clamp(8px, 0.9vw, 12px)',
+    padX: 'clamp(16px, 1.2vw, 22px)',
+    formWidth: 'clamp(420px, 56vw, 680px)',
+  },
+  desktop: {
+    title: 'clamp(36px, 3vw, 56px)',
+    sub: 'clamp(22px, 1.8vw, 30px)',
+    body: 'clamp(16px, 0.9vw, 36px)',
+    button: 'clamp(16px, 1vw, 20px)',
+    padY: 'clamp(12px, 0.8vw, 18px)',
+    padX: 'clamp(20px, 1.2vw, 40px)',
+    formWidth: 'clamp(480px, 44vw, 820px)',
+  },
 } as const;
 
 const RELATION_OPTIONS = [
-  "Anne","Baba","Kardeş","Sevgili","Arkadaş","İş Arkadaşı","Öğretmen","Eş","Çocuk",
+  'Anne',
+  'Baba',
+  'Kardeş',
+  'Sevgili',
+  'Arkadaş',
+  'İş Arkadaşı',
+  'Öğretmen',
+  'Eş',
+  'Çocuk',
 ] as const;
 
-type Relation = (typeof RELATION_OPTIONS)[number];
+type Relation = typeof RELATION_OPTIONS[number];
 
-const GENDERS = ["Kadın", "Erkek", "Belirtmek İstemiyor"] as const;
+const GENDERS = ['Kadın', 'Erkek', 'Belirtmek İstemiyor'] as const;
 
-const genderOptionsForRelation = (r: Relation | ""): readonly string[] => {
-  if (r === "Anne") return ["Kadın", "Belirtmek İstemiyor"] as const;
-  if (r === "Baba") return ["Erkek", "Belirtmek İstemiyor"] as const;
+const genderOptionsForRelation = (r: Relation | ''): readonly string[] => {
+  if (r === 'Anne') return ['Kadın', 'Belirtmek İstemiyor'] as const;
+  if (r === 'Baba') return ['Erkek', 'Belirtmek İstemiyor'] as const;
   return GENDERS;
 };
 
 const OCCASION_OPTIONS = [
-  "Doğum Günü","Evlilik Yıldönümü","Sevgililer Günü","Yılbaşı","Anneler Günü","Babalar Günü",
-  "Mezuniyet","Yeni İş/Terfi","Yeni Ev","Nişan/Düğün","Geçmiş Olsun","Teşekkür","Sınav Başarısı","Diğer",
+  'Doğum Günü',
+  'Evlilik Yıldönümü',
+  'Sevgililer Günü',
+  'Yılbaşı',
+  'Anneler Günü',
+  'Babalar Günü',
+  'Mezuniyet',
+  'Yeni İş/Terfi',
+  'Yeni Ev',
+  'Nişan/Düğün',
+  'Geçmiş Olsun',
+  'Teşekkür',
+  'Sınav Başarısı',
+  'Diğer',
 ];
 
 const KATEGORI_SECENEKLERI = [
-  "Kıyafet","Ayakkabı","Aksesuar","Elektronik","Ev Eşyası","Kitap","Kozmetik","Oyun/Hobi","Spor/Outdoor","Mutfak",
+  'Kıyafet',
+  'Ayakkabı',
+  'Aksesuar',
+  'Elektronik',
+  'Ev Eşyası',
+  'Kitap',
+  'Kozmetik',
+  'Oyun/Hobi',
+  'Spor/Outdoor',
+  'Mutfak',
 ];
 
-const FREE_TRY_KEY = "hediye_free_try_used";
-const LOGIN_KEY = "isLoggedIn";
-
+const FREE_TRY_KEY = 'hediye_free_try_used';
+const LOGIN_KEY = 'isLoggedIn';
 
 async function fetchGiftSuggestions(form: any) {
-  const resp = await fetch("/api/giftSuggestions", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+  const resp = await fetch('/api/giftSuggestions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(form),
   });
   const js = await resp.json();
   if (!resp.ok || !js.ok) {
-    throw new Error(js?.error || "AI error");
+    throw new Error(js?.error || 'AI error');
   }
   return js.data as any[];
 }
@@ -71,13 +131,13 @@ const Product = ({
   const s = sizes[deviceType];
 
   const [form, setForm] = useState({
-    kime: "" as Relation | "",
-    neden: "",
-    yas: "",
-    cinsiyet: "",
-    burc: "",
-    sevdigi: "",
-    hobiler: "",
+    kime: '' as Relation | '',
+    neden: '',
+    yas: '',
+    cinsiyet: '',
+    burc: '',
+    sevdigi: '',
+    hobiler: '',
     kategoriler: [] as string[],
   });
 
@@ -94,27 +154,27 @@ const Product = ({
     if (oneriler && oneriler.length >= 3 && suggestionsRef.current) {
       const el = suggestionsRef.current;
       const y = el.getBoundingClientRect().top + window.scrollY - 80;
-      window.scrollTo({ top: y, behavior: "smooth" });
+      window.scrollTo({ top: y, behavior: 'smooth' });
     }
   }, [oneriler]);
 
   useEffect(() => {
     const handler = () => setFavoriModal(true);
-    window.addEventListener("show-favori-modal", handler);
-    return () => window.removeEventListener("show-favori-modal", handler);
+    window.addEventListener('show-favori-modal', handler);
+    return () => window.removeEventListener('show-favori-modal', handler);
   }, [setFavoriModal]);
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem(LOGIN_KEY) === "true";
+    const loggedIn = localStorage.getItem(LOGIN_KEY) === 'true';
     setIsAuthenticated(loggedIn);
-    setFreeTryUsed(localStorage.getItem(FREE_TRY_KEY) === "true");
+    setFreeTryUsed(localStorage.getItem(FREE_TRY_KEY) === 'true');
   }, []);
 
   const currentGenderOptions = genderOptionsForRelation(form.kime);
 
   useEffect(() => {
     if (form.cinsiyet && !currentGenderOptions.includes(form.cinsiyet as any)) {
-      setForm((p) => ({ ...p, cinsiyet: "" }));
+      setForm((p) => ({ ...p, cinsiyet: '' }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.kime]);
@@ -147,11 +207,13 @@ const Product = ({
           const cevaplar = await fetchGiftSuggestions(form); // DEĞİŞTİ
           setOneriler(cevaplar || []);
           setFreeTryUsed(true);
-          localStorage.setItem(FREE_TRY_KEY, "true");
-          toast.info("Bu önerileri sizin için hazırladık. Favorilemek ve devam etmek için lütfen giriş yapınız.");
+          localStorage.setItem(FREE_TRY_KEY, 'true');
+          toast.info(
+            'Bu önerileri sizin için hazırladık. Favorilemek ve devam etmek için lütfen giriş yapınız.'
+          );
         } catch (error) {
-          console.error("FREE TRY HATASI:", error);
-          alert("Bir hata oluştu. Konsolu kontrol edin.");
+          console.error('FREE TRY HATASI:', error);
+          alert('Bir hata oluştu. Konsolu kontrol edin.');
         } finally {
           setLoading(false);
         }
@@ -164,9 +226,9 @@ const Product = ({
 
     setLoading(true);
     try {
-      const formResponse = await fetch("/api/formEkle", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const formResponse = await fetch('/api/formEkle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           kullanici_id: 1,
           kime_hediye: form.kime,
@@ -185,9 +247,9 @@ const Product = ({
 
       const cevaplar = await fetchGiftSuggestions(form); // DEĞİŞTİ
 
-      const oneriResponse = await fetch("/api/oneriEkle", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const oneriResponse = await fetch('/api/oneriEkle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           request_id: requestId,
           suggestions: cevaplar,
@@ -197,8 +259,8 @@ const Product = ({
       const oneriData = await oneriResponse.json();
       setOneriler(oneriData.suggestions);
     } catch (error) {
-      console.error("API HATASI:", error);
-      alert("Bir hata oluştu. Konsolu kontrol edin.");
+      console.error('API HATASI:', error);
+      alert('Bir hata oluştu. Konsolu kontrol edin.');
     } finally {
       setLoading(false);
     }
@@ -207,7 +269,7 @@ const Product = ({
   const toggleFavori = async (item: any) => {
     if (!isAuthenticated) {
       setShowLoginModal(true);
-      toast.info("Favorilere eklemek için önce giriş yapınız.");
+      toast.info('Favorilere eklemek için önce giriş yapınız.');
       return;
     }
 
@@ -220,29 +282,29 @@ const Product = ({
     setFavoriler([...favoriler, item]);
 
     try {
-      await fetch("/api/favoriEkle", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      await fetch('/api/favoriEkle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           user_id: 1,
           suggestion_id: item.id,
         }),
       });
     } catch (err) {
-      console.error("Favori veritabanına eklenemedi:", err);
+      console.error('Favori veritabanına eklenemedi:', err);
     }
 
     confetti({
       particleCount: 30,
       spread: 70,
       origin: { y: 0.4 },
-      colors: ["#ff4d4f", "#ff85c0", "#ffadd2"],
+      colors: ['#ff4d4f', '#ff85c0', '#ffadd2'],
       scalar: 0.7,
     });
 
-    toast.success("Ürün favorilere eklendi!", {
-      toastId: "favori-eklendi",
-      position: "top-right",
+    toast.success('Ürün favorilere eklendi!', {
+      toastId: 'favori-eklendi',
+      position: 'top-right',
     });
     setAnimatedHeartId(item.baslik);
     setTimeout(() => setAnimatedHeartId(null), 350);
@@ -254,21 +316,18 @@ const Product = ({
         id="product"
         className="relative min-h-screen flex items-center justify-center"
         style={{
-          minHeight: "100vh",
-          width: "100%",
+          minHeight: '100vh',
+          width: '100%',
           backgroundImage: "url('/assets/images/formguncel.png')",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       >
         <div className="absolute inset-0 bg-white bg-opacity-70 z-0" />
 
         <div className="relative z-10 mx-auto px-4" style={{ width: s.formWidth }}>
-          <form
-            onSubmit={handleSubmit}
-            className="bg-white p-8 rounded-xl shadow-lg space-y-6"
-          >
+          <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-lg space-y-6">
             <h2
               className="font-bold text-center text-primary mb-6"
               style={{ fontSize: s.title, lineHeight: 1.15 }}
@@ -430,7 +489,7 @@ const Product = ({
                 disabled={loading}
                 style={{ fontSize: s.button, padding: `${s.padY} ${s.padX}` }}
               >
-                {loading ? "Yükleniyor..." : "Önerileri Göster"}
+                {loading ? 'Yükleniyor...' : 'Önerileri Göster'}
               </button>
             </div>
           </form>
@@ -452,7 +511,7 @@ const Product = ({
                 <div
                   key={index}
                   className={`relative rounded-lg bg-white shadow-md p-6 flex flex-col justify-between ${
-                    index === 1 ? "border-2 border-red-500" : ""
+                    index === 1 ? 'border-2 border-red-500' : ''
                   }`}
                 >
                   <button
@@ -465,9 +524,9 @@ const Product = ({
                       xmlns="http://www.w3.org/2000/svg"
                       className={`h-6 w-6 transition-all duration-300 ${
                         (favoriler ?? []).some((f) => f.baslik === item.baslik)
-                          ? "text-red-500 fill-red-500"
-                          : "text-gray-400 fill-transparent"
-                      } ${animatedHeartId === item.baslik ? "heart-pop" : ""}`}
+                          ? 'text-red-500 fill-red-500'
+                          : 'text-gray-400 fill-transparent'
+                      } ${animatedHeartId === item.baslik ? 'heart-pop' : ''}`}
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
@@ -487,10 +546,10 @@ const Product = ({
                       className="text-center text-primary mb-4 font-bold"
                       style={{ fontSize: s.sub }}
                     >
-                      {item.baslik || "Başlık yok"}
+                      {item.baslik || 'Başlık yok'}
                     </h3>
                     <p className="text-gray-700 text-center" style={{ fontSize: s.body }}>
-                      {item.aciklama || "Açıklama yok"}
+                      {item.aciklama || 'Açıklama yok'}
                     </p>
                   </div>
 
@@ -498,11 +557,9 @@ const Product = ({
                     <button
                       onClick={() =>
                         window.open(
-                          item.link?.startsWith("http")
-                            ? item.link
-                            : `https://${item.link}`,
-                          "_blank",
-                          "noopener,noreferrer"
+                          item.link?.startsWith('http') ? item.link : `https://${item.link}`,
+                          '_blank',
+                          'noopener,noreferrer'
                         )
                       }
                       className="font-medium text-red-600 border-b-2 border-transparent hover:border-red-600 hover:text-red-700 transition"
@@ -549,11 +606,9 @@ const Product = ({
                     <button
                       onClick={() =>
                         window.open(
-                          item.link?.startsWith("http")
-                            ? item.link
-                            : `https://${item.link}`,
-                          "_blank",
-                          "noopener,noreferrer"
+                          item.link?.startsWith('http') ? item.link : `https://${item.link}`,
+                          '_blank',
+                          'noopener,noreferrer'
                         )
                       }
                       className="text-red-600 border-b-2 border-transparent hover:border-red-600 hover:text-red-700 transition"
@@ -570,10 +625,7 @@ const Product = ({
         </div>
       )}
 
-      <LoginRequiredModal
-        show={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-      />
+      <LoginRequiredModal show={showLoginModal} onClose={() => setShowLoginModal(false)} />
     </>
   );
 };

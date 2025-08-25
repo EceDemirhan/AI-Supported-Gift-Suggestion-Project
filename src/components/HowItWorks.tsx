@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
-import React from "react";
+import React from 'react';
 
-import config from "../config/index.json";
-import { useDeviceType } from "../hooks/useDeviceType";
+import config from '../config/index.json';
+import { useDeviceType } from '../hooks/useDeviceType';
 
 const HowItWorks = () => {
   const { title, subtitle, description, steps } = config.howItWorks;
@@ -10,64 +10,67 @@ const HowItWorks = () => {
 
   const sizes = {
     mobile: {
-      title:       "clamp(24px, 7vw, 38px)",
-      sub:         "clamp(16px, 4.5vw, 24px)",
-      body:        "clamp(14px, 3.6vw, 18px)",
-      stepTitle:   "clamp(15px, 3.8vw, 20px)",
-      stepBody:    "clamp(13px, 3.4vw, 16px)",
-      icon:        "clamp(56px, 15vw, 80px)",
-      padY:        "clamp(16px, 5vw, 28px)",
-      gridGap:     "clamp(16px, 4vw, 24px)",
-      gridTop:     "clamp(20px, 6vw, 36px)",   // grid üstündeki boşluk
-      iconGap:     "clamp(12px, 3.5vw, 18px)", 
-      stepGap:     "clamp(6px, 2.8vw, 10px)", 
+      title: 'clamp(24px, 7vw, 38px)',
+      sub: 'clamp(16px, 4.5vw, 24px)',
+      body: 'clamp(14px, 3.6vw, 18px)',
+      stepTitle: 'clamp(15px, 3.8vw, 20px)',
+      stepBody: 'clamp(13px, 3.4vw, 16px)',
+      icon: 'clamp(56px, 15vw, 80px)',
+      padY: 'clamp(16px, 5vw, 28px)',
+      gridGap: 'clamp(16px, 4vw, 24px)',
+      gridTop: 'clamp(20px, 6vw, 36px)', // grid üstündeki boşluk
+      iconGap: 'clamp(12px, 3.5vw, 18px)',
+      stepGap: 'clamp(6px, 2.8vw, 10px)',
     },
     tablet: {
-      title:       "clamp(28px, 5.2vw, 48px)",
-      sub:         "clamp(18px, 3.2vw, 28px)",
-      body:        "clamp(15px, 2.2vw, 19px)",
-      stepTitle:   "clamp(16px, 2.4vw, 22px)",
-      stepBody:    "clamp(14px, 2vw, 17px)",
-      icon:        "clamp(64px, 10vw, 90px)",
-      padY:        "clamp(18px, 3.2vw, 32px)",
-      gridGap:     "clamp(20px, 3vw, 28px)",
-      gridTop:     "clamp(22px, 4vw, 42px)",
-      iconGap:     "clamp(14px, 2.4vw, 22px)",
-      stepGap:     "clamp(6px, 2vw, 12px)",
+      title: 'clamp(28px, 5.2vw, 48px)',
+      sub: 'clamp(18px, 3.2vw, 28px)',
+      body: 'clamp(15px, 2.2vw, 19px)',
+      stepTitle: 'clamp(16px, 2.4vw, 22px)',
+      stepBody: 'clamp(14px, 2vw, 17px)',
+      icon: 'clamp(64px, 10vw, 90px)',
+      padY: 'clamp(18px, 3.2vw, 32px)',
+      gridGap: 'clamp(20px, 3vw, 28px)',
+      gridTop: 'clamp(22px, 4vw, 42px)',
+      iconGap: 'clamp(14px, 2.4vw, 22px)',
+      stepGap: 'clamp(6px, 2vw, 12px)',
     },
     laptop: {
-      title:       "clamp(28px, 3vw, 40px)",   
-      sub:         "clamp(20px, 2.4vw, 32px)",
-      body:        "clamp(16px, 1.2vw, 20px)",
-      stepTitle:   "clamp(17px, 1.4vw, 24px)",
-      stepBody:    "clamp(14px, 1.1vw, 18px)",
-      icon:        "clamp(72px, 7vw, 100px)",
-      padY:        "clamp(20px, 2vw, 36px)",
-      gridGap:     "clamp(24px, 2.4vw, 36px)",
-      gridTop:     "clamp(24px, 3vw, 48px)",
-      iconGap:     "clamp(16px, 1.8vw, 26px)",
-      stepGap:     "clamp(8px, 1.2vw, 14px)",
+      title: 'clamp(28px, 3vw, 40px)',
+      sub: 'clamp(20px, 2.4vw, 32px)',
+      body: 'clamp(16px, 1.2vw, 20px)',
+      stepTitle: 'clamp(17px, 1.4vw, 24px)',
+      stepBody: 'clamp(14px, 1.1vw, 18px)',
+      icon: 'clamp(72px, 7vw, 100px)',
+      padY: 'clamp(20px, 2vw, 36px)',
+      gridGap: 'clamp(24px, 2.4vw, 36px)',
+      gridTop: 'clamp(24px, 3vw, 48px)',
+      iconGap: 'clamp(16px, 1.8vw, 26px)',
+      stepGap: 'clamp(8px, 1.2vw, 14px)',
     },
     desktop: {
-      title:       "clamp(36px, 3.6vw, 56px)", 
-      sub:         "clamp(22px, 1.8vw, 36px)",
-      body:        "clamp(16px, 0.9vw, 26px)",
-      stepTitle:   "clamp(18px, 1.1vw, 26px)",
-      stepBody:    "clamp(14px, 0.9vw, 20px)",
-      icon:        "clamp(80px, 5.6vw, 112px)",
-      padY:        "clamp(22px, 1.4vw, 40px)",
-      
-      gridGap:     "clamp(36px, 3.8vw, 96px)", 
-      gridTop:     "clamp(28px, 3vw, 52px)",   
-      iconGap:     "clamp(18px, 1.2vw, 28px)", 
-      stepGap:     "clamp(8px, 0.9vw, 16px)",  
+      title: 'clamp(36px, 3.6vw, 56px)',
+      sub: 'clamp(22px, 1.8vw, 36px)',
+      body: 'clamp(16px, 0.9vw, 26px)',
+      stepTitle: 'clamp(18px, 1.1vw, 26px)',
+      stepBody: 'clamp(14px, 0.9vw, 20px)',
+      icon: 'clamp(80px, 5.6vw, 112px)',
+      padY: 'clamp(22px, 1.4vw, 40px)',
+
+      gridGap: 'clamp(36px, 3.8vw, 96px)',
+      gridTop: 'clamp(28px, 3vw, 52px)',
+      iconGap: 'clamp(18px, 1.2vw, 28px)',
+      stepGap: 'clamp(8px, 0.9vw, 16px)',
     },
   } as const;
 
   const s = sizes[deviceType];
 
   return (
-    <section id="works" className="w-full min-h-screen flex flex-col justify-center items-center px-6">
+    <section
+      id="works"
+      className="w-full min-h-screen flex flex-col justify-center items-center px-6"
+    >
       <div
         id="how-it-works"
         className="bg-white w-full"
@@ -85,7 +88,6 @@ const HowItWorks = () => {
           </p>
         </div>
 
-        
         <div
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 mt-12 max-w-6xl mx-auto px-4"
           style={{
@@ -103,11 +105,14 @@ const HowItWorks = () => {
                 style={{
                   width: s.icon,
                   height: s.icon,
-                  objectFit: "cover",
+                  objectFit: 'cover',
                   marginBottom: s.iconGap, // ikon -> başlık arası
                 }}
               />
-              <h3 className="font-semibold text-primary" style={{ fontSize: s.stepTitle, lineHeight: 1.25 }}>
+              <h3
+                className="font-semibold text-primary"
+                style={{ fontSize: s.stepTitle, lineHeight: 1.25 }}
+              >
                 {step.name}
               </h3>
               <p
@@ -115,7 +120,7 @@ const HowItWorks = () => {
                 style={{
                   fontSize: s.stepBody,
                   lineHeight: 1.5,
-                  marginTop: s.stepGap, 
+                  marginTop: s.stepGap,
                 }}
               >
                 {step.description}

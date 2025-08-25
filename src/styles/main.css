@@ -1,9 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "~slick-carousel/slick/slick.css";
-@import "~slick-carousel/slick/slick-theme.css";
-
+@import '~slick-carousel/slick/slick.css';
+@import '~slick-carousel/slick/slick-theme.css';
 
 :root {
   --color-primary: #ec4755;
@@ -11,7 +10,7 @@
   --color-tertiaty: #99a0a3;
 }
 
-a { 
+a {
   @apply text-red-700;
 }
 
@@ -27,12 +26,11 @@ a:hover {
 
 */
 
-
 .logo-link {
   border-bottom: none !important;
   display: inline-block;
   width: fit-content;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .logo-link:hover {
@@ -68,8 +66,6 @@ a:hover {
   animation: heart-pop 0.35s ease-in-out;
 }
 
-
-
 .content p {
   @apply my-6;
 }
@@ -78,7 +74,8 @@ a:hover {
   @apply my-6;
 }
 .bg-gift-pattern {
-  background-image: url('/assets/images/form arka plan.png'), url('/assets/images/form arka plan.png');
+  background-image: url('/assets/images/form arka plan.png'),
+    url('/assets/images/form arka plan.png');
   background-repeat: no-repeat;
   background-position: left center, right center;
   background-size: auto 70%;

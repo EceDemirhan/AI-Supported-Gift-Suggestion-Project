@@ -1,15 +1,12 @@
+/* eslint-disable import/no-duplicates */
+/* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
-import React from "react";
+import React from 'react';
 
-import { BriefcaseIcon } from "@heroicons/react/24/outline";
+import { BriefcaseIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 
-// eslint-disable-next-line import/no-duplicates
-import { EnvelopeIcon } from "@heroicons/react/24/outline";
-
-import config from "../config/index.json";
-import { useDeviceType } from "../hooks/useDeviceType";
-
-
+import config from '../config/index.json';
+import { useDeviceType } from '../hooks/useDeviceType';
 
 const About = () => {
   const { company, about } = config;
@@ -17,36 +14,36 @@ const About = () => {
   const { socialMedia, sections, contact } = about;
 
   const { deviceType } = useDeviceType();
-    const first = sections?.[0];
+  const first = sections?.[0];
 
   const sizes = {
     mobile: {
-      title:  "clamp(24px, 7vw, 38px)",
-       body:        "clamp(14px, 3.6vw, 18px)",
-      meta:   "clamp(13px, 3.4vw, 16px)",
-      logo:   "clamp(96px, 28vw, 160px)",
-      gap:    "clamp(10px, 3.5vw, 16px)",
+      title: 'clamp(24px, 7vw, 38px)',
+      body: 'clamp(14px, 3.6vw, 18px)',
+      meta: 'clamp(13px, 3.4vw, 16px)',
+      logo: 'clamp(96px, 28vw, 160px)',
+      gap: 'clamp(10px, 3.5vw, 16px)',
     },
     tablet: {
-      title:       "clamp(28px, 5.2vw, 48px)",
-      body:        "clamp(15px, 2.2vw, 19px)",
-      meta:   "clamp(14px, 2.2vw, 18px)",
-      logo:   "clamp(120px, 20vw, 180px)",
-      gap:    "clamp(12px, 2.6vw, 18px)",
+      title: 'clamp(28px, 5.2vw, 48px)',
+      body: 'clamp(15px, 2.2vw, 19px)',
+      meta: 'clamp(14px, 2.2vw, 18px)',
+      logo: 'clamp(120px, 20vw, 180px)',
+      gap: 'clamp(12px, 2.6vw, 18px)',
     },
     laptop: {
-     title:       "clamp(28px, 3vw, 32px)", 
-      body:        "clamp(16px, 1.2vw, 16px)",
-      meta:   "clamp(14px, 1.2vw, 18px)",
-      logo:   "clamp(180px, 20vw, 260px)",
-      gap:    "clamp(12px, 1.6vw, 20px)",
+      title: 'clamp(28px, 3vw, 32px)',
+      body: 'clamp(16px, 1.2vw, 16px)',
+      meta: 'clamp(14px, 1.2vw, 18px)',
+      logo: 'clamp(180px, 20vw, 260px)',
+      gap: 'clamp(12px, 1.6vw, 20px)',
     },
     desktop: {
-      title:       "clamp(30px, 2.6vw, 40px)",
-      body:        "clamp(16px, 0.9vw, 24px)",
-      meta:   "clamp(14px, 0.9vw, 20px)",
-      logo:   "clamp(220px, 24vw, 290px)",
-      gap:    "clamp(12px, 1.2vw, 22px)",
+      title: 'clamp(30px, 2.6vw, 40px)',
+      body: 'clamp(16px, 0.9vw, 24px)',
+      meta: 'clamp(14px, 0.9vw, 20px)',
+      logo: 'clamp(220px, 24vw, 290px)',
+      gap: 'clamp(12px, 1.2vw, 22px)',
     },
   } as const;
 
@@ -55,17 +52,16 @@ const About = () => {
   return (
     <div id="about" className="mx-auto container xl:px-20 lg:px-12 sm:px-6 px-4 py-12">
       <div className="flex flex-col items-center justify-center">
-        
-    <div>
-  <img
-    src={logo}
-    alt={companyName}
-    style={{ width: s.logo, height: s.logo }}
-    className="object-contain translate-y-6 md:translate-y-8"
-  />
-</div>
+        <div>
+          <img
+            src={logo}
+            alt={companyName}
+            style={{ width: s.logo, height: s.logo }}
+            className="object-contain translate-y-6 md:translate-y-8"
+          />
+        </div>
 
-     <div className="text-center max-w-2xl mt-4 text-gray-800 dark:text-gray-300">
+        <div className="text-center max-w-2xl mt-4 text-gray-800 dark:text-gray-300">
           {first && (
             <>
               <h2 className="font-semibold mb-2" style={{ fontSize: s.title }}>
@@ -76,14 +72,20 @@ const About = () => {
           )}
         </div>
 
-        <div className="mt-6 space-y-1 text-center text-gray-700 dark:text-gray-200" style={{ fontSize: s.body }}>
+        <div
+          className="mt-6 space-y-1 text-center text-gray-700 dark:text-gray-200"
+          style={{ fontSize: s.body }}
+        >
           <p className="flex items-center justify-center gap-2">
             <EnvelopeIcon className="h-5 w-5 text-red-500" />
-            <a href={`mailto:${contact.email}`} className="cursor-pointer font-medium text-red-500 hover:text-red-600 border-b-0 hover:!border-b-0">
+            <a
+              href={`mailto:${contact.email}`}
+              className="cursor-pointer font-medium text-red-500 hover:text-red-600 border-b-0 hover:!border-b-0"
+            >
               {contact.email}
             </a>
           </p>
-          
+
           <p className="flex items-center justify-center gap-2">
             <BriefcaseIcon className="h-5 w-5 text-red-500" />
             <a
@@ -112,12 +114,11 @@ const About = () => {
           )}
         </div>
 
-  
         <div className="mt-8 text-gray-500 dark:text-gray-400" style={{ fontSize: s.meta }}>
           <p>
-            © 2025{" "}
+            © 2025{' '}
             <span>
-              designed by{" "}
+              designed by{' '}
               <a href="https://github.com/EceDemirhan">
                 <strong>Ece Demirhan</strong>
               </a>
