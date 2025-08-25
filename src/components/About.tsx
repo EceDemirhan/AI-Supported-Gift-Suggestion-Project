@@ -17,6 +17,7 @@ const About = () => {
   const { socialMedia, sections, contact } = about;
 
   const { deviceType } = useDeviceType();
+    const first = sections?.[0];
 
   const sizes = {
     mobile: {
@@ -64,12 +65,15 @@ const About = () => {
   />
 </div>
 
-        
-        <div className="text-center max-w-2xl mt-4 text-gray-800 dark:text-gray-300">
-          <h2 className="font-semibold mb-2" style={{ fontSize: s.title }}>
-            {sections[0].name}
-          </h2>
-          <p style={{ fontSize: s.body }}>{sections[0].content}</p>
+     <div className="text-center max-w-2xl mt-4 text-gray-800 dark:text-gray-300">
+          {first && (
+            <>
+              <h2 className="font-semibold mb-2" style={{ fontSize: s.title }}>
+                {first.name}
+              </h2>
+              <p style={{ fontSize: s.body }}>{first.content}</p>
+            </>
+          )}
         </div>
 
         <div className="mt-6 space-y-1 text-center text-gray-700 dark:text-gray-200" style={{ fontSize: s.body }}>
