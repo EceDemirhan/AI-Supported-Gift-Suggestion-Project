@@ -59,3 +59,4 @@ Kurallar:
     return text.split(/\n+/).filter(s => s.trim()).map(s => s.replace(/^\d+[\.\-]?\s*/, ""));
   }
 }
+// test
