@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 
 import { useDeviceType } from '../hooks/useDeviceType';
 
+
+// guncellendi
 type Errors = {
   email?: string;
   password?: string;
