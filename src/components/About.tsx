@@ -1,8 +1,15 @@
 /* eslint-disable prettier/prettier */
 import React from "react";
 
+import { BriefcaseIcon } from "@heroicons/react/24/outline";
+
+// eslint-disable-next-line import/no-duplicates
+import { EnvelopeIcon } from "@heroicons/react/24/outline";
+
 import config from "../config/index.json";
 import { useDeviceType } from "../hooks/useDeviceType";
+
+
 
 const About = () => {
   const { company, about } = config;
@@ -66,20 +73,20 @@ const About = () => {
         </div>
 
         <div className="mt-6 space-y-1 text-center text-gray-700 dark:text-gray-200" style={{ fontSize: s.body }}>
-          <p>
-            📧{" "}
-            <a href={`mailto:${contact.email}`} className="text-primary hover:underline">
+          <p className="flex items-center justify-center gap-2">
+            <EnvelopeIcon className="h-5 w-5 text-red-500" />
+            <a href={`mailto:${contact.email}`} className="cursor-pointer font-medium text-red-500 hover:text-red-600 border-b-0 hover:!border-b-0">
               {contact.email}
             </a>
           </p>
-          <p>📞 {contact.phone}</p>
-          <p>
-            💼{" "}
+          
+          <p className="flex items-center justify-center gap-2">
+            <BriefcaseIcon className="h-5 w-5 text-red-500" />
             <a
               href={socialMedia.linkedin}
               target="_blank"
               rel="noreferrer"
-              className="text-primary hover:underline"
+              className="cursor-pointer font-medium text-red-500 hover:text-red-600 border-b-0 hover:!border-b-0"
             >
               LinkedIn
             </a>
