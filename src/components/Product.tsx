@@ -102,6 +102,8 @@ const KATEGORI_SECENEKLERI = [
 
 const FREE_TRY_KEY = 'hediye_free_try_used';
 const LOGIN_KEY = 'isLoggedIn';
+const USER_EMAIL_KEY = 'userEmail';
+
 
 async function fetchGiftSuggestions(form: any) {
   const resp = await fetch('/api/giftSuggestions', {
@@ -147,6 +149,8 @@ const Product = ({
   const [loading, setLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [freeTryUsed, setFreeTryUsed] = useState<boolean>(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+
 
   // Auto-scroll
   const suggestionsRef = useRef<HTMLDivElement | null>(null);
@@ -164,11 +168,12 @@ const Product = ({
     return () => window.removeEventListener('show-favori-modal', handler);
   }, [setFavoriModal]);
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem(LOGIN_KEY) === 'true';
-    setIsAuthenticated(loggedIn);
-    setFreeTryUsed(localStorage.getItem(FREE_TRY_KEY) === 'true');
-  }, []);
+useEffect(() => {
+  const loggedIn = localStorage.getItem(LOGIN_KEY) === 'true';
+  setIsAuthenticated(loggedIn);
+  setFreeTryUsed(localStorage.getItem(FREE_TRY_KEY) === 'true');
+  setUserEmail(localStorage.getItem(USER_EMAIL_KEY));
+}, []);
 
   const currentGenderOptions = genderOptionsForRelation(form.kime);
 
@@ -230,7 +235,7 @@ const Product = ({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          kullanici_id: 1,
+          email: userEmail, 
           kime_hediye: form.kime,
           neden_hediye: form.neden,
           yas: Number(form.yas || 0),
@@ -243,7 +248,8 @@ const Product = ({
       });
 
       const formData = await formResponse.json();
-      const requestId = formData.id;
+      const requestId = formData.request_id ?? formData.id;
+
 
       const cevaplar = await fetchGiftSuggestions(form); // DEĞİŞTİ
 
@@ -286,7 +292,7 @@ const Product = ({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          user_id: 1,
+          email: userEmail,
           suggestion_id: item.id,
         }),
       });
